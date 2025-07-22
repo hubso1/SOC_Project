@@ -19,12 +19,16 @@ This project aims to build a complete Security Operations Center (SOC) environme
 
 This project serves an educational purpose, helping users explore the architecture, integration, and operation of tools commonly used in real-world SOC environments. It can be extended further and used as a base for experiments, development, and hands-on practice in threat detection and incident response.
 
- <integration>
-    <name>shuffle</name>
-    <hook_url>API</hook_url>                                                               
-    <level>6</level>
-    <alert_format>json</alert_format>
-  </integration>
+### Integracja Wazuh z Shuffle:
 
-/var/ossec/etc/ossec.conf
+```xml
+<integration>
+  <name>shuffle</name>
+  <hook_url>API</hook_url>
+  <level>6</level>
+  <alert_format>json</alert_format>
+</integration>
+```
+
+_Ścieżka pliku konfiguracyjnego: `/var/ossec/etc/ossec.conf`_
 
