@@ -18,3 +18,5 @@ This project aims to build a complete Security Operations Center (SOC) environme
     Visualize data flow and interaction between components in a modern SOC setup
 
 This project serves an educational purpose, helping users explore the architecture, integration, and operation of tools commonly used in real-world SOC environments. It can be extended further and used as a base for experiments, development, and hands-on practice in threat detection and incident response.
+
+<img width="605" height="428" alt="obraz" src="https://github.com/user-attachments/assets/15322f47-ded7-41e6-b6de-802d2b2110a6" />
