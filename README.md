@@ -1,5 +1,5 @@
 # SOC_Project
-Open-source SOC lab environment using tools like Wazuh, Suricata, TheHive, Cortex, Shuffle and more. Built for learning, threat detection, log analysis, and incident response.
+**Open-source SOC** lab environment using tools like **Wazuh, Suricata, TheHive, Cortex, Shuffle and more.** Built for learning, threat detection, log analysis, and incident response.
 
 ## Project Description
 
@@ -26,7 +26,7 @@ The following diagram presents the general architecture of a Security Operations
 <img width="512" height="362" alt="unnamed" src="https://github.com/user-attachments/assets/0b07ca1d-1ecb-4a23-a504-32bba53d4048" />
 
 
-### Integracja Wazuh z Shuffle:
+### Wazuh & Shuffle integration:
 
 ```xml
 <integration>
