@@ -330,3 +330,53 @@ After running this command, the alert will be visible in the Wazuh dashboard.
 <img width="512" height="147" alt="unnamed" src="https://github.com/user-attachments/assets/26237bf8-e8c1-4e59-a2af-873914c16f03" />
 
 📚 Source: [Wazuh FIM Documentation](https://documentation.wazuh.com/current/user-manual/capabilities/file-integrity/advanced-settings.html)
+
+### 7.🧰 Installing and Configuring Suricata IDS/IPS on an Endpoint | Integration with Wazuh
+
+**Suricata** is an open-source IDS/IPS engine capable of real-time traffic analysis and packet inspection. When deployed on an endpoint (Wazuh agent), it acts as a local network monitor for threats. Integration with **Wazuh** enables:
+
+- Centralized collection of Suricata alerts
+- Correlation with other security events
+- Improved incident visibility and faster response
+
+### ⚙️ Suricata Installation and Basic Setup
+
+After installing Suricata on the endpoint, configure its main YAML configuration file:
+
+**File path:** `/etc/suricata/suricata.yaml`
+
+Be sure to:
+
+- Set the correct **network interface** for packet capture
+- Define **home networks** accurately (including internal ranges), but **do not blindly trust internal IPs** — attacks may originate from compromised internal devices
+
+<img width="512" height="263" alt="unnamed" src="https://github.com/user-attachments/assets/5cbcc22a-3f32-4389-b945-0da88dd665d6" />
+<img width="512" height="52" alt="unnamed" src="https://github.com/user-attachments/assets/86fb8ff9-d3b0-4193-aa33-47c029dcccd3" />
+
+### 📦 Installing Emerging Threats Ruleset
+
+The [Emerging Threats](https://rules.emergingthreats.net/) ruleset provides Suricata with up-to-date, community-maintained signatures. It enhances detection for:
+
+- Malware communication
+- Exploits and known vulnerabilities
+- Suspicious or abnormal network behavior
+
+Once installed, ensure your `suricata.yaml` file includes these rules by referencing the correct rule paths and categories.
+
+<img width="512" height="174" alt="unnamed" src="https://github.com/user-attachments/assets/74060f67-12f1-459a-b19c-5ac1116dd8cc" />
+<img width="512" height="171" alt="unnamed" src="https://github.com/user-attachments/assets/38bbedd1-72b9-4e48-aea1-946f5d8e0af2" />
+
+
+### 📡 Integrating Suricata with Wazuh
+
+To forward Suricata alerts to the Wazuh manager, configure the agent to monitor the Suricata JSON log file:
+
+**File path:** `/var/ossec/etc/shared/Suricata/agent.conf`
+
+```xml
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/suricata/eve.json</location>
+</localfile>
+```
+
