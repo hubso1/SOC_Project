@@ -601,6 +601,7 @@ File path: /var/ossec/etc/ossec.conf
 
 This configuration allows Wazuh to send JSON-formatted alerts to the specified Slack webhook URL whenever any of the listed rules (e.g., 100092, 100299) are triggered.
 Example Alerts on Slack Channel
+
 <img width="512" height="127" alt="unnamed" src="https://github.com/user-attachments/assets/1283a503-10ac-4547-ba66-fc117938fe18" />
 <img width="512" height="182" alt="unnamed" src="https://github.com/user-attachments/assets/c12b6220-d546-436a-8af1-8217599897ee" />
 
