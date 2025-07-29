@@ -25,6 +25,45 @@ The following diagram presents the general architecture of a Security Operations
 
 <img width="512" height="362" alt="unnamed" src="https://github.com/user-attachments/assets/0b07ca1d-1ecb-4a23-a504-32bba53d4048" />
 
+---
+
+## 📦 System Components Overview
+
+### [**Wazuh Server**](https://wazuh.com/)
+Central server managing all agents. Responsible for collecting, analyzing, and forwarding logs from endpoints, as well as managing security policies and active responses.
+
+### [**Wazuh Indexer**](https://wazuh.com/)
+Log storage and search component based on OpenSearch. Stores security logs for fast querying and visualization.
+
+### [**Wazuh Dashboard**](https://wazuh.com/)
+Web-based visual interface (Wazuh UI/Kibana). Allows alert inspection, rule creation, dashboards, and visual analysis.
+
+### [**Wazuh Agent**](https://wazuh.com/)
+Lightweight agents installed on endpoints (Linux/Windows) that collect logs, monitor systems, and react to events.
+
+### [**Wazuh Active Response**](https://documentation.wazuh.com/current/user-manual/capabilities/active-response/index.html)
+Incident response mechanism capable of blocking IPs during brute-force attacks, stopping malicious processes, restarting services, etc. Can function as a basic EDR with proper configuration.
+
+### [**Shuffle – SOAR**](https://github.com/frikky/Shuffle)
+Automation tool that reacts to detected threats (e.g., querying VirusTotal, creating incidents in TheHive, sending alerts to Slack). Uses "workflows" triggered by specific security events.
+
+### [**TheHive**](https://thehive-project.org/)
+Security Incident Response Platform (SIRP) for managing, tracking, and analyzing incidents.
+
+### [**Cortex**](https://github.com/TheHive-Project/Cortex)
+Analysis engine integrated with TheHive and Shuffle. Provides a wide range of analyzers (e.g., VirusTotal, AbuseIPDB, DNS lookup) for automatic data enrichment.
+
+### [**Suricata**](https://suricata.io/)
+Network IDS/IPS monitoring tool that detects port scanning, exploits, and network anomalies. Operates at the packet level.
+
+### [**VirusTotal**](https://www.virustotal.com/)
+Online service that scans files and URLs using multiple antivirus engines. Integrated with Cortex and Shuffle for threat analysis.
+
+### [**Slack**](https://slack.com/)
+Communication platform used by the security team. Integrated with Shuffle for real-time alerting and notifications.
+
+### [**Technitium DNS Server**](https://technitium.com/dns/)
+Internal DNS server deployed to monitor DNS queries. Enables DNS traffic visibility and is integrated with Wazuh for identifying suspicious domain requests.
 
 ### Wazuh & Shuffle integration:
 
