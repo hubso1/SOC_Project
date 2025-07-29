@@ -503,3 +503,11 @@ The following configuration enables the Active Response mechanism on the Wazuh s
     <rules_id>87105</rules_id>
   </active-response>
 ```
+### Operation of Active Response and automatic malicious file removal:
+  
+  Downloading the malicious file:
+
+<img width="512" height="59" alt="unnamed" src="https://github.com/user-attachments/assets/96ed418e-3239-4623-b031-b36ce3811ce7" />
+<img width="512" height="67" alt="unnamed" src="https://github.com/user-attachments/assets/1443fc0e-e18c-441b-8b05-d98145cb0d32" />
+<img width="512" height="91" alt="unnamed" src="https://github.com/user-attachments/assets/290a31d6-64fb-4b72-878a-0375df9a2ed0" />
+
