@@ -167,7 +167,7 @@ tail `/var/ossec/etc/ossec.conf` | grep SSL
 
 🔧 Disabling SSL Verification in shuffle.py (Temporary Workaround)
 
-In the integration script located at /var/ossec/integrations/shuffle.py, locate the requests.post function. You can set the verify flag to False to bypass SSL verification (not recommended for production).
+In the integration script located at /var/ossec/integrations/shuffle.py, locate the requests.post function. You can set the verify flag to **False** to bypass SSL verification (not recommended for production).
 Example code adjustment:
 ```python
 def send_msg(msg: str, url: str) -> None:
@@ -177,3 +177,156 @@ def send_msg(msg: str, url: str) -> None:
 ```
 ⚠️ Warning: This method is not guaranteed to work with all servers, as some enforce strict SSL policies and may reject unsecured connections
 
+### 5. 🗂️ Adding FIM (File Integrity Monitoring) Rules
+
+FIM (File Integrity Monitoring) rules allow you to monitor changes to critical system directories in real time. This helps detect unauthorized modifications to configuration files or binaries, which may indicate a security breach or unwanted activity.
+
+It is recommended to monitor key system paths such as:
+
+- `/etc`
+- `/root`
+- `/bin`
+- `/sbin`
+
+These directories contain sensitive configuration files, user data, and critical system binaries.
+
+To enable file integrity monitoring in Wazuh, add the following entries to the Wazuh Manager configuration file:
+
+**File path:** `/var/ossec/etc/ossec.conf`
+
+```xml
+<directories check_all="yes" report_changes="yes" realtime="yes">/etc</directories>
+<directories check_all="yes" report_changes="yes" realtime="yes">/root</directories>
+<directories check_all="yes" report_changes="yes" realtime="yes">/bin</directories>
+<directories check_all="yes" report_changes="yes" realtime="yes">/sbin</directories>
+```
+These settings activate FIM for the listed directories. The parameters:
+
+    check_all="yes" – inspects all files
+
+    report_changes="yes" – logs content modifications
+
+    realtime="yes" – enables real-time monitoring
+
+With this configuration, Wazuh will immediately detect and report any changes made to the specified directories, helping you quickly identify unauthorized or suspicious activity.
+
+📚 Source: [Wazuh FIM Documentation](https://documentation.wazuh.com/current/user-manual/capabilities/file-integrity/index.html)
+
+### 6. 🛡️ Advanced FIM (File Integrity Monitoring) Configuration
+
+To expand the precision and scope of file integrity monitoring, the configuration of the **FIM module** in Wazuh can be extended via the `agent.conf` file. This allows for:
+
+- Monitoring additional critical system files and directories (both Linux and Windows)
+- Enabling **real-time monitoring** of changes
+- Storing diffs of modified files with `report_changes`
+- Using `whodata` to identify the user responsible for a change (requires Auditd or Windows Event Log)
+
+### 🧩 Sample agent.conf Configuration
+
+**File path:** `/var/ossec/etc/shared/default/agent.conf`
+
+```xml
+<agent_config>
+  <syscheck>
+    <disabled>no</disabled>
+    <!-- Frequency: every 12 hours -->
+    <frequency>43200</frequency>
+    <scan_on_start>yes</scan_on_start>
+
+    <!-- Linux directories -->
+    <directories>/etc,/usr/bin,/usr/sbin</directories>
+    <directories>/bin,/sbin,/boot</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">/bin,/sbin,/usr/bin,/usr/sbin</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes" whodata="yes">/etc/passwd</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes" whodata="yes">/etc/shadow</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">/etc/resolv.conf</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">/etc/sudoers</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">/root/.bash_history</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">/etc/ssh/</directories>
+
+    <!-- Windows directories -->
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\Tasks</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\System32\drivers\etc\hosts</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes" whodata="yes">C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\System32\sysWOW64</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\Windows\System32\config</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\Program Files (x86)</directories>
+    <directories check_all="yes" report_changes="yes" realtime="yes">C:\ProgramData</directories>
+
+    <!-- Ignored paths -->
+    <ignore>c:\program files (x86)\ossec-agent</ignore>
+    <ignore>/etc/mtab</ignore>
+    <ignore>/etc/hosts.deny</ignore>
+    <ignore>/etc/mail/statistics</ignore>
+    <ignore>/etc/random-seed</ignore>
+    <ignore>/etc/random.seed</ignore>
+    <ignore>/etc/adjtime</ignore>
+    <ignore>/etc/httpd/logs</ignore>
+    <ignore>/etc/utmpx</ignore>
+    <ignore>/etc/wtmpx</ignore>
+    <ignore>/etc/cups/certs</ignore>
+    <ignore>/etc/dumpdates</ignore>
+    <ignore>/etc/svc/volatile</ignore>
+
+    <!-- Ignore file types -->
+    <ignore type="sregex">.log$|.swp$</ignore>
+
+    <!-- Check but do not store diff -->
+    <nodiff>/etc/ssl/private.key</nodiff>
+
+    <!-- Skip virtual filesystems -->
+    <skip_nfs>yes</skip_nfs>
+    <skip_dev>yes</skip_dev>
+    <skip_proc>yes</skip_proc>
+    <skip_sys>yes</skip_sys>
+
+    <!-- Tuning -->
+    <process_priority>10</process_priority>
+    <max_eps>50</max_eps>
+
+    <!-- Database synchronization -->
+    <synchronization>
+      <enabled>yes</enabled>
+      <interval>5m</interval>
+      <max_eps>10</max_eps>
+    </synchronization>
+  </syscheck>
+</agent_config>
+```
+This configuration is applied on the Wazuh Manager and is automatically distributed to all agents. It significantly simplifies large-scale FIM deployment across many endpoints.
+⚠️ Detecting Execution Permissions on Shell Scripts
+
+Giving execution permission to a script can pose a serious threat if the script contains malicious code (e.g., deleting or modifying critical files). Therefore, this action should be tightly controlled and monitored.
+
+Wazuh has built-in rules to detect permission changes, but you can also create custom FIM rules to fine-tune detection — for example, when execute permission (+x) is added to shell scripts.
+🔧 Custom Rule to Detect Execute Bit on Scripts
+
+File path: /var/ossec/etc/rules/fim_special.xml
+
+```xml
+<group name="syscheck">
+  <rule id="100022" level="8">
+    <if_sid>550</if_sid>
+    <field name="file">.sh$</field>
+    <field name="changed_fields">^permission$</field>
+    <field name="perm" type="pcre2">\w\wx</field>
+    <description>Execute permission added to shell script.</description>
+    <mitre>
+      <id>T1222.002</id>
+    </mitre>
+  </rule>
+</group>
+```
+
+This rule will generate an alert when a .sh file receives execution permission.
+
+Example command to trigger the rule:
+
+```bash
+chmod +x script.sh
+```
+
+After running this command, the alert will be visible in the Wazuh dashboard.
+<img width="512" height="147" alt="unnamed" src="https://github.com/user-attachments/assets/26237bf8-e8c1-4e59-a2af-873914c16f03" />
+
+📚 Source: [Wazuh FIM Documentation](https://documentation.wazuh.com/current/user-manual/capabilities/file-integrity/advanced-settings.html)
