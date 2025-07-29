@@ -562,6 +562,7 @@ Create a custom rule that triggers the firewall block based on Suricata detectio
 🔍 This rule detects repeated events (frequency="2" within 20 seconds) originating from rule 100003 (e.g., a Suricata port scanning alert) and raises the alert level to 12. Once the condition is met, the appropriate response action is triggered.
 
 📉 Outcome
+
 <img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/56400781-2848-4137-a2a5-1f9be1f1b62f" />
 <img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/fa64ffe4-520d-45cb-8074-f34d39ebd71d" />
 
