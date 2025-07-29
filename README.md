@@ -577,3 +577,33 @@ When the scan is initiated from a malicious host and the rule is triggered:
     Logs confirm execution of the firewall-drop Active Response.
 
 📴 No network connectivity remains between the source and destination host during the blocking period.
+
+### 10. 📢 Integration of Wazuh with Slack for Real-Time Alerting
+
+Slack has been integrated as a communication channel for the security team to ensure real-time delivery of critical security notifications. Using the SOAR platform Shuffle, it is possible to automatically forward alerts from Wazuh directly to a designated Slack channel.
+
+    💬 Slack is a modern communication platform that enables teams to exchange information in real time, integrate with external tools, and respond to incidents quickly and efficiently.
+
+🔗 Slack Integration with Wazuh
+
+To enable Slack alerting, add the following integration block to the Wazuh manager configuration:
+
+File path: /var/ossec/etc/ossec.conf
+
+```xml
+<integration>
+  <name>slack</name>
+  <hook_url>https://hooks.slack.com/services/API</hook_url>
+  <rule_id>100092,5763,100210,100299</rule_id>
+  <alert_format>json</alert_format>
+</integration>
+```
+
+This configuration allows Wazuh to send JSON-formatted alerts to the specified Slack webhook URL whenever any of the listed rules (e.g., 100092, 100299) are triggered.
+Example Alerts on Slack Channel
+<img width="512" height="127" alt="unnamed" src="https://github.com/user-attachments/assets/1283a503-10ac-4547-ba66-fc117938fe18" />
+<img width="512" height="182" alt="unnamed" src="https://github.com/user-attachments/assets/c12b6220-d546-436a-8af1-8217599897ee" />
+
+🔗 Source:
+[Wazuh Documentation — Integration with External APIs](https://documentation.wazuh.com/current/user-manual/manager/integration-with-external-apis.html)
+
