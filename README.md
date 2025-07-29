@@ -380,3 +380,126 @@ To forward Suricata alerts to the Wazuh manager, configure the agent to monitor 
 </localfile>
 ```
 
+📚 Sources:
+    [Wazuh + Suricata Integration Guide](https://documentation.wazuh.com/current/proof-of-concept-guide/integrate-network-ids-suricata.html)
+
+### 8. 🦠 Integration with VirusTotal | Automated Malware Detection and Removal | Active Response
+
+Wazuh includes an **Active Response** module that automates reactions to detected security incidents. Although Active Response is not a full EDR/XDR system, it serves as an automatic mechanism enabling security teams to quickly and effectively respond to specific events, simplifying incident management.
+
+### 🔗 VirusTotal Engine Integration with Wazuh
+
+Add the following integration block in the Wazuh manager configuration to connect VirusTotal API:
+
+**File path:** `/var/ossec/etc/ossec.conf`
+
+```xml
+<integration>
+  <name>virustotal</name>
+  <api_key>API_VT</api_key>
+  <rule_id>100200,100201</rule_id>
+  <alert_format>json</alert_format>
+</integration>
+```
+
+🛠️ Creating Active Response Script for Automated Malware Removal
+
+Create a script remove-threat.sh to automatically remove malicious files detected on endpoints:
+
+**File path:**  `/var/ossec/active-response/bin/remove-threat.sh`
+
+```bash
+#!/bin/bash
+
+LOCAL=`dirname $0`;
+cd $LOCAL
+cd ../
+
+PWD=`pwd`
+
+read INPUT_JSON
+FILENAME=$(echo $INPUT_JSON | jq -r .parameters.alert.data.virustotal.source.file)
+COMMAND=$(echo $INPUT_JSON | jq -r .command)
+LOG_FILE="${PWD}/../logs/active-responses.log"
+
+#------------------------ Analyze command -------------------------#
+if [ ${COMMAND} = "add" ]
+then
+ # Send control message to execd
+ printf '{"version":1,"origin":{"name":"remove-threat","module":"active-response"},"command":"check_keys", "parameters":{"keys":[]}}\n'
+
+ read RESPONSE
+ COMMAND2=$(echo $RESPONSE | jq -r .command)
+ if [ ${COMMAND2} != "continue" ]
+ then
+  echo "`date '+%Y/%m/%d %H:%M:%S'` $0: $INPUT_JSON Remove threat active response aborted" >> ${LOG_FILE}
+  exit 0;
+ fi
+fi
+
+# Removing file
+rm -f $FILENAME
+if [ $? -eq 0 ]; then
+ echo "`date '+%Y/%m/%d %H:%M:%S'` $0: $INPUT_JSON Successfully removed threat" >> ${LOG_FILE}
+else
+ echo "`date '+%Y/%m/%d %H:%M:%S'` $0: $INPUT_JSON Error removing threat" >> ${LOG_FILE}
+fi
+
+exit 0;
+```
+
+The script reads JSON data containing threat information, including the path to the malicious file. It verifies action permissions via communication with the Wazuh execd daemon, then attempts to delete the specified file and logs success or failure. This ensures a fast and effective automated incident response.
+
+📋 Local Rules for Alerting and Automated File Removal
+Configure local rules to detect suspicious changes in critical directories and trigger automatic malware removal alerts:
+**File path:**  `var/ossec/etc/rules/local_rules.xml`
+
+```xml
+<group name="syscheck,pci_dss_11.5,nist_800_53_SI.7,">
+    <!-- Rules for Linux systems -->
+    <rule id="100200" level="7">
+        <if_sid>550</if_sid>
+        <field name="file">/root</field>
+        <description>File modified in /root directory.</description>
+    </rule>
+    <rule id="100201" level="7">
+        <if_sid>554</if_sid>
+        <field name="file">/root</field>
+        <description>File added to /root directory.</description>
+    </rule>
+</group>
+
+<group name="virustotal,">
+  <rule id="100092" level="12">
+    <if_sid>657</if_sid>
+    <match>Successfully removed threat</match>
+    <description>$(parameters.program) removed threat located at $(parameters.alert.data.virustotal.source.file)</description>
+  </rule>
+
+  <rule id="100093" level="12">
+    <if_sid>657</if_sid>
+    <match>Error removing threat</match>
+    <description>Error removing threat located at $(parameters.alert.data.virustotal.source.file)</description>
+  </rule>
+</group>
+```
+
+Thanks to these local rules, the Wazuh system can detect suspicious changes in critical directories and also automatically respond to detected threats, informing the administrator about the success or issues encountered during the malware removal process.
+
+The following configuration enables the Active Response mechanism on the Wazuh server. It defines the remove-threat command, which executes the **remove-threat.sh** script in response to the detection of a specific event (rule with ID 87105):
+**File path:**  `var/ossec/etc/ossec.conf`
+
+```xml
+  <command>
+    <name>remove-threat</name>
+    <executable>remove-threat.sh</executable>
+    <timeout_allowed>no</timeout_allowed>
+  </command>
+
+  <active-response>
+    <disabled>no</disabled>
+    <command>remove-threat</command>
+    <location>local</location>
+    <rules_id>87105</rules_id>
+  </active-response>
+```
