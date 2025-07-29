@@ -143,7 +143,9 @@ To integrate Wazuh with Shuffle, insert the following snippet into your `/var/os
 </integration>
 ```
 🚀 Creating the First Webhook
+
 <img width="512" height="200" alt="unnamed" src="https://github.com/user-attachments/assets/f3b4cdcc-c73f-4e9a-81e7-100b2ff05ef1" />
+
 A webhook is a basic mechanism for receiving data in Shuffle. In the context of Wazuh, it enables:
 
     Real-time reception of alerts immediately after they are generated
