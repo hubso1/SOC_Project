@@ -120,12 +120,19 @@ To use agentless monitoring, Wazuh requires an SSH connection from the Wazuh man
 By adding these rules to Wazuh, you extend your environment’s visibility and response capabilities with minimal configuration overhead.
 <img width="512" height="206" alt="unnamed" src="https://github.com/user-attachments/assets/31ca5faf-a5de-495a-8cd8-be90d293d13f" />
 
+### 4. Installing Shuffle (SOAR) | Integration with Wazuh
 
+Shuffle is a SOAR (Security Orchestration, Automation, and Response) platform that enables automation and orchestration of security processes. Integrating Shuffle with Wazuh allows for:
 
+- Automatic alert processing  
+- Quick remediation actions  
+- Coordination of various security tools and systems in one place  
 
+This helps security teams increase incident response efficiency, minimize reaction time, and reduce the risk of human error.
 
+### 🧩 Wazuh Integration with Shuffle
 
-### Wazuh & Shuffle integration:
+To integrate Wazuh with Shuffle, insert the following snippet into your `/var/ossec/etc/ossec.conf` file:
 
 ```xml
 <integration>
@@ -135,6 +142,36 @@ By adding these rules to Wazuh, you extend your environment’s visibility and r
   <alert_format>json</alert_format>
 </integration>
 ```
+🚀 Creating the First Webhook
+<img width="512" height="200" alt="unnamed" src="https://github.com/user-attachments/assets/f3b4cdcc-c73f-4e9a-81e7-100b2ff05ef1" />
+A webhook is a basic mechanism for receiving data in Shuffle. In the context of Wazuh, it enables:
 
-_File path: `/var/ossec/etc/ossec.conf`_
+    Real-time reception of alerts immediately after they are generated
+
+    Triggering Shuffle workflows, such as alert classification or escalation
+
+📚 Source: (https://github.com/Shuffle/Shuffle)
+
+❗ Troubleshooting SSL Certificate Errors
+
+If SSL-related errors occur, you may temporarily disable SSL verification, though this is not recommended for production environments due to the associated security risks.
+Example error messages:
+Check for SSL-related log entries using:
+tail `/var/ossec/etc/ossec.conf` | grep SSL
+```syslog
+2025/07/04 03:51:21 wazuh-integratord: ERROR: While running shuffle -> integrations. Output: requests.exceptions.SSLError: HTTPSConnectionPool(host='IP', port=3001): Max retries exceeded with url: /api/v1/hooks/API (Caused by SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1007)')))
+2025/07/04 03:53:08 wazuh-integratord: ERROR: While running shuffle -> integrations. Output: requests.exceptions.SSLError: HTTPSConnectionPool(host='IP', port=3443): Max retries exceeded with url: /api/v1/hooks/<API> (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1007)')))
+```
+
+🔧 Disabling SSL Verification in shuffle.py (Temporary Workaround)
+
+In the integration script located at /var/ossec/integrations/shuffle.py, locate the requests.post function. You can set the verify flag to False to bypass SSL verification (not recommended for production).
+Example code adjustment:
+```python
+def send_msg(msg: str, url: str) -> None:
+    """Send the message to the API"""
+    headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
+    res = requests.post(url, data=msg, headers=headers, timeout=10, verify=False)
+```
+⚠️ Warning: This method is not guaranteed to work with all servers, as some enforce strict SSL policies and may reject unsecured connections
 
