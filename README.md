@@ -511,3 +511,68 @@ The following configuration enables the Active Response mechanism on the Wazuh s
 <img width="512" height="67" alt="unnamed" src="https://github.com/user-attachments/assets/1443fc0e-e18c-441b-8b05-d98145cb0d32" />
 <img width="512" height="91" alt="unnamed" src="https://github.com/user-attachments/assets/290a31d6-64fb-4b72-878a-0375df9a2ed0" />
 
+### 9. 🔥 Active Response — Blocking Malicious Hosts via Firewall
+
+Wazuh includes a set of built-in scripts used for Active Response. These scripts are located in the following directory on Linux/Unix endpoints:
+**File path:** `/var/ossec/active-response/bin/`
+
+The firewall-drop active response script is available by default on Linux/Unix systems. It uses iptables to block malicious IP addresses.
+
+To enable automatic IP blocking, add the following configuration to the Wazuh manager:
+
+**File path:** `/var/ossec/etc/ossec.conf`
+
+```xml
+<command>
+    <name>firewall-drop</name>
+    <executable>firewall-drop</executable>
+    <timeout_allowed>yes</timeout_allowed>
+  </command>
+  
+  <active-response>
+    <disabled>no</disabled>
+    <command>firewall-drop</command>
+    <location>local</location>
+    <rules_id>5763,100004,100299</rules_id>
+    <timeout>60</timeout>
+  </active-response>
+```
+📌 The configuration above means that when one of the specified rules (e.g., 100299) is triggered, the system will locally block the source IP for 60 seconds on the machine where the alert originated.
+
+🚫 Operation of firewall-drop (Active Response)
+
+Example use case: Blocking a host for 60 seconds when port scanning is detected.
+🛡️ Custom Active Response Rule Based on Suricata Alert
+
+Create a custom rule that triggers the firewall block based on Suricata detection:
+
+**File path:** `/var/ossec/etc/rules/local_rules.xml`
+
+```xml
+<group name="custom_active_response_rules,">
+  <rule id="100299" level="12" ignore="10" frequency="2" timeframe="20">
+    <if_sid>100003</if_sid>
+    <description>PORT Scanning detected!</description>
+    <mitre>
+      <id>T1595</id>
+    </mitre>
+  </rule>
+</group>
+```
+🔍 This rule detects repeated events (frequency="2" within 20 seconds) originating from rule 100003 (e.g., a Suricata port scanning alert) and raises the alert level to 12. Once the condition is met, the appropriate response action is triggered.
+
+📉 Outcome
+<img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/56400781-2848-4137-a2a5-1f9be1f1b62f" />
+<img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/fa64ffe4-520d-45cb-8074-f34d39ebd71d" />
+
+When the scan is initiated from a malicious host and the rule is triggered:
+
+    The attacker’s IP address is blocked using iptables for 60 seconds.
+
+    Communication between the attacker and the target system is interrupted.
+
+    A corresponding alert appears in the Wazuh dashboard.
+
+    Logs confirm execution of the firewall-drop Active Response.
+
+📴 No network connectivity remains between the source and destination host during the blocking period.
