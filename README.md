@@ -65,6 +65,66 @@ Communication platform used by the security team. Integrated with Shuffle for re
 ### [**Technitium DNS Server**](https://technitium.com/dns/)
 Internal DNS server deployed to monitor DNS queries. Enables DNS traffic visibility and is integrated with Wazuh for identifying suspicious domain requests.
 
+---
+
+## 🚀 Deployment Overview
+
+### 1. Installing Wazuh
+
+In this setup, both the Wazuh Server and the Indexer component are installed on the same host. This simplifies configuration and is commonly used in test or small-scale environments.
+
+For larger and production-grade deployments, it is possible to deploy multiple Indexer instances distributed across different hosts. This architecture allows for system scaling, improved performance, and high availability. Such an approach enables efficient management of large volumes of data and better support for distributed environments.
+
+📄 **Installation guide:** [Wazuh Installation Documentation](https://documentation.wazuh.com/current/installation-guide/index.html)
+
+⚠️ If you experience issues accessing the Wazuh Dashboard, ensure that **port 443** is open on your local firewall.
+<img width="512" height="97" alt="unnamed" src="https://github.com/user-attachments/assets/c7126730-f275-426a-b43f-edae7e40e668" />
+
+### 2. Installing Wazuh Agents
+<img width="512" height="157" alt="unnamed" src="https://github.com/user-attachments/assets/61a8b2b9-9571-423f-92c4-9effb71a5271" />
+
+If any issues occur during agent installation, it's recommended to check the log file: _`/var/ossec/etc/ossec.log`_
+<img width="512" height="96" alt="unnamed" src="https://github.com/user-attachments/assets/c53a5e6b-41a1-4700-98b1-9b02b3696558" />
+
+#### 🛠️ Common Issue: Duplicate Hostname
+
+Agent installation may fail if the agent's hostname is identical to the Wazuh manager's hostname. In the Wazuh system, **each agent must have a unique name** to ensure proper registration and communication.
+
+If a name conflict occurs, the system will reject the agent. To resolve this, make sure the agent’s hostname differs from the manager’s hostname.
+
+### 🔌 Agentless Monitoring
+
+Wazuh also supports **agentless monitoring**, which can be useful for devices where installing an agent is not feasible (e.g., firewalls, routers, or remote Linux systems).
+
+Example configuration:
+```xml
+<agentless>
+  <type>ssh_integrity_check_linux</type>
+  <frequency>300</frequency>
+  <host>root@IP</host>
+  <state>periodic_diff</state>
+  <arguments>/etc /usr/bin /usr/sbin</arguments>
+</agentless>
+```
+To use agentless monitoring, Wazuh requires an SSH connection from the Wazuh manager to the target endpoint. This method enables log collection and integrity checks without installing a local agent.
+
+### 3. Adding SOCFortress Rules to Wazuh
+
+[SOCFortress](https://github.com/socfortress/Wazuh-Rules) is a community-driven platform offering pre-built and regularly updated security rules and detection scenarios. Integrating SOCFortress rules into Wazuh significantly enhances threat detection capabilities, allowing for:
+
+- Faster identification of advanced attack techniques  
+- Broader detection coverage across various systems  
+- Improved efficiency of the security operations team  
+- Use of tested, community-backed threat signatures
+
+By adding these rules to Wazuh, you extend your environment’s visibility and response capabilities with minimal configuration overhead.
+<img width="512" height="206" alt="unnamed" src="https://github.com/user-attachments/assets/31ca5faf-a5de-495a-8cd8-be90d293d13f" />
+
+
+
+
+
+
 ### Wazuh & Shuffle integration:
 
 ```xml
@@ -76,5 +136,5 @@ Internal DNS server deployed to monitor DNS queries. Enables DNS traffic visibil
 </integration>
 ```
 
-_Ścieżka pliku konfiguracyjnego: `/var/ossec/etc/ossec.conf`_
+_File path: `/var/ossec/etc/ossec.conf`_
 
