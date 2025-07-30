@@ -986,6 +986,110 @@ A configured local DNS server:
 
     Sends data to Wazuh for advanced correlation and alerting
 
+### Incident Detection with Auditd and Wazuh
+
+**Auditd** is a native Linux auditing tool used to track system activity and user behavior. In this use case, we leverage Auditd on an Ubuntu endpoint to monitor and alert on the execution of suspicious commands by privileged users.
+
+🎯 Objective
+
+Track and respond to malicious command execution on Linux endpoints. This includes logging all executed commands by privileged users (e.g., sudo, root) and triggering alerts for high-risk actions using custom rules and Wazuh’s lookup capabilities.
+
+🧩 Step-by-step Setup
+
+Add audit rules to track command execution path: `/etc/audit/audit.rules`:
+
+```bash
+echo "-a exit,always -F auid=1000 -F egid!=994 -F auid!=-1 -F arch=b32 -S execve -k audit-wazuh-c" >> /etc/audit/audit.rules
+echo "-a exit,always -F auid=1000 -F egid!=994 -F auid!=-1 -F arch=b64 -S execve -k audit-wazuh-c" >> /etc/audit/audit.rules
+```
+Configure the Wazuh agent to read Auditd logs:
+
+File path: `/var/ossec/etc/ossec.conf`
+
+```xml
+<localfile>
+  <log_format>audit</log_format>
+  <location>/var/log/audit/audit.log</location>
+</localfile>
+```
+
+Create a CDB list `/var/ossec/etc/lists/suspicious-programs` with potentially dangerous commands:
+
+```bash
+ncat:yellow
+nc:red
+tcpdump:orange
+```
+
+Add the list to the Wazuh manager configuration (`/var/ossec/etc/ossec.conf`):
+
+```xml
+<list>etc/lists/suspicious-programs</list>
+```
+
+Then define a custom rule in `/var/ossec/etc/rules/local_rules.xml`:
+
+```xml
+<group name="audit">
+  <rule id="100210" level="12">
+    <if_sid>80792</if_sid>
+    <list field="audit.command" lookup="match_key_value" check_value="red">etc/lists/suspicious-programs</list>
+    <description>Audit: Highly Suspicious Command executed: $(audit.exe)</description>
+    <group>audit_command,</group>
+  </rule>
+</group>
+```
+
+🔍 Monitoring File Downloads via wget + Incident Enrichment Pipeline
+
+To improve detection capabilities for suspicious file downloads, a custom Wazuh rule was created to monitor the use of the wget command. This rule helps identify when users attempt to download files or connect to external domains directly from the command line.
+
+Custom rule defined in `/var/ossec/etc/rules/local_rules.xml`:
+
+```
+<group name="audit">
+  <rule id="100010" level="8">
+    <if_sid>80700</if_sid>
+    <match>wget</match>
+    <description>Command WGET executed by user! - $(audit.exe) - $(audit.execve.a1)</description>
+    <group>wget_usage</group>
+  </rule>
+</group>
+```
+
+🔁 Automation and Threat Enrichment Workflow
+
+When the above rule is triggered (e.g., wget is used to fetch a file), Wazuh generates an alert. This alert is forwarded to Shuffle (SOAR) where an automated workflow processes the incident:
+
+    URL & Domain Extraction: The command line argument (audit.execve.a1) is parsed to extract the download URL or domain.
+
+    Threat Intelligence Lookup: The extracted indicators are automatically sent to Cortex for enrichment using analyzers like:
+
+        VirusTotal
+
+        URLScan
+
+    Case Creation in TheHive: The enriched alert is converted into a case in TheHive, including:
+
+        Original command and user details
+
+        Threat intelligence results
+
+        Severity based on the reputation of the downloaded content
+
+This setup enables near real-time response and deeper context for analysts, all built using open-source tooling.
+
+🧪 Attack Emulation
+
+To test detection:
+
+<img width="647" height="82" alt="obraz" src="https://github.com/user-attachments/assets/5e0c1181-629b-4e78-80fe-134b910acceb" />
+
+<img width="1086" height="146" alt="obraz" src="https://github.com/user-attachments/assets/07a5ba31-c1b2-4535-8db5-fa07e4a44090" />
+
+
+This should trigger a high-severity alert due to the presence of nc in the suspicious-programs list with severity level "red".
+
 ---
 
 ## Incident Response
