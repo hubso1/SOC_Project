@@ -943,6 +943,9 @@ Result:
 
 <img width="512" height="184" alt="unnamed" src="https://github.com/user-attachments/assets/1ef548fa-cb95-4360-8b17-9f1a3c41b7bc" />
 
+<img width="512" height="124" alt="unnamed" src="https://github.com/user-attachments/assets/ab4361cf-ba9a-4deb-8f74-f63df4c37238" />
+
+<img width="512" height="504" alt="unnamed" src="https://github.com/user-attachments/assets/ec48540b-f3e0-4aed-a202-5d29add86636" />
 
 
 To apply the DNS server system-wide, configure it in: `/etc/resolv.conf`
@@ -954,6 +957,9 @@ nameserver <DNS_IP-ADDRESS>
 📊 Creating DNS Dashboard in Wazuh
 
 Thanks to this integration, a custom Local DNS Dashboard can be built in Wazuh to visualize and analyze DNS activity across the network.
+
+<img width="512" height="283" alt="unnamed" src="https://github.com/user-attachments/assets/176f92d1-5ff2-489b-bc0d-a6ab48ca7f3e" />
+
 
 📌 Reference:
 https://zaferbalkan.com/technitium/
