@@ -173,7 +173,7 @@ tail `/var/ossec/etc/ossec.conf | grep SSL`
 2025/07/04 03:53:08 wazuh-integratord: ERROR: While running shuffle -> integrations. Output: requests.exceptions.SSLError: HTTPSConnectionPool(host='IP', port=3443): Max retries exceeded with url: /api/v1/hooks/<API> (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1007)')))
 ```
 
-🔧 Disabling SSL Verification in shuffle.py (Temporary Workaround)
+🔧 Disabling SSL Verification in `shuffle.py` (Temporary Workaround)
 
 In the integration script located at `/var/ossec/integrations/shuffle.py`, locate the requests.post function. You can set the verify flag to **False** to bypass SSL verification (not recommended for production).
 Example code adjustment:
@@ -719,6 +719,7 @@ Thanks to the advanced workflow design in Shuffle, high-severity alerts automati
     Push-back of enriched data into TheHive.
 
 <img width="274" height="512" alt="unnamed" src="https://github.com/user-attachments/assets/7ce37d6b-f29d-489a-bbe2-500b98a38c29" />
+
 
 <img width="512" height="142" alt="unnamed" src="https://github.com/user-attachments/assets/d57c7a2a-b7ac-404e-b973-7c887078e582" />
 
