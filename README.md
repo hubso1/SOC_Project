@@ -3,8 +3,8 @@
 
 ## 📚 Table of Contents
 1. [Project Description](#project-description)
-2. [SOC security system architecture diagram](soc-security-system-architecture-diagram)
-3. [System Components Overview](system-components-overview)
+2. [SOC security system architecture diagram](#soc-security-system-architecture-diagram)
+3. [System Components Overview](#system-components-overview)
 
 ## Project Description
 
