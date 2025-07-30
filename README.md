@@ -32,7 +32,7 @@ The following diagram presents the general architecture of a Security Operations
 ### [**Wazuh Server**](https://wazuh.com/)
 Central server managing all agents. Responsible for collecting, analyzing, and forwarding logs from endpoints, as well as managing security policies and active responses.
 
-### [**Wazuh Indexer**](https://wazuh.com/)
+### [**Wazuh Indexer**](https://wazuh.com/) 
 Log storage and search component based on OpenSearch. Stores security logs for fast querying and visualization.
 
 ### [**Wazuh Dashboard**](https://wazuh.com/)
@@ -294,6 +294,7 @@ To expand the precision and scope of file integrity monitoring, the configuratio
 </agent_config>
 ```
 This configuration is applied on the Wazuh Manager and is automatically distributed to all agents. It significantly simplifies large-scale FIM deployment across many endpoints.
+
 ⚠️ Detecting Execution Permissions on Shell Scripts
 
 Giving execution permission to a script can pose a serious threat if the script contains malicious code (e.g., deleting or modifying critical files). Therefore, this action should be tightly controlled and monitored.
@@ -608,3 +609,122 @@ Example Alerts on Slack Channel
 🔗 Source:
 [Wazuh Documentation — Integration with External APIs](https://documentation.wazuh.com/current/user-manual/manager/integration-with-external-apis.html)
 
+### 11. Installation and Configuration of TheHive and Cortex | Integration with Shuffle for Alert Management
+
+**Installation Guide:**  
+https://github.com/StrangeBeeCorp/docker
+
+#### 🐝 TheHive – Incident Response Platform (IRP)
+
+TheHive is a powerful IRP designed for managing cybersecurity incidents. It allows you to:
+
+- Collect alerts from multiple sources (e.g., Wazuh via Shuffle),
+- Automatically create and classify incidents (alerts and cases),
+- Manage incident lifecycle following SOC procedures.
+
+**In this project:**
+
+- Only `High` and `Medium` severity alerts are forwarded to TheHive (e.g., malware detection, port scans, suspicious logins).
+- Only `High` severity alerts are automatically escalated to full **cases**, requiring manual analysis by SOC analysts.
+- This setup enables initial classification and helps reduce **false positives**, improving alert triage efficiency.
+
+<img width="512" height="338" alt="unnamed" src="https://github.com/user-attachments/assets/e5d4cacb-097e-4102-844e-27e150074d0e" />
+
+#### Example JSON Alert Payload (advanced setup)
+
+Due to an initial issue with incorrect JSON formatting, manual construction of the alert payload according to TheHive API documentation was required. This resolved alert creation issues.
+
+<img width="512" height="299" alt="unnamed" src="https://github.com/user-attachments/assets/12be63c0-14de-4790-bd66-75e29eaf28fd" />
+
+<img width="512" height="153" alt="unnamed" src="https://github.com/user-attachments/assets/641f6c25-7c3d-4733-88f5-be08186dd2f8" />
+
+```json
+{
+  "description": " $exec.title |  
+Agent: $exec.all_fields.agent.ip, $exec.all_fields.agent.id, $exec.all_fields.agent.name
+MITRE: $exec.all_fields.data.parameters.alert.rule.mitre.id | $exec.all_fields.data.parameters.alert.rule.mitre.tactic |  $exec.all_fields.data.parameters.alert.rule.mitre.technique",
+  "externallink": "",
+  "pap": 2,
+  "severity": $exec.severity,
+  "source": "Wazuh",
+  "sourceRef": "Rule: $exec.all_fields.rule.id ",
+  "status": "New",
+  "summary": " $exec.all_fields.rule.description TIME:  $exec.timestamp  ",
+  "tags": ["  $exec.id,$exec.all_fields.agent.ip "],
+  "title": " $exec.title ",
+  "tlp": 2,
+  "type": "Internal"
+}
+```
+Example Alert Visualization in TheHive
+
+    High severity alerts, escalated as cases, are visible within the TheHive dashboard for review and tracking.
+
+<img width="512" height="63" alt="unnamed" src="https://github.com/user-attachments/assets/2fe50a63-c740-4951-b5ad-ba1a403c1566" />
+
+<img width="512" height="185" alt="unnamed" src="https://github.com/user-attachments/assets/9c09e53d-271e-40a1-aaab-0a51511d9f0e" />
+
+<img width="512" height="71" alt="unnamed" src="https://github.com/user-attachments/assets/b849f33b-5f82-4191-b50d-fe480ce4a4cc" />
+
+<img width="512" height="95" alt="unnamed" src="https://github.com/user-attachments/assets/d939da2e-3897-4501-a4f5-f1d9f451da49" />
+
+<img width="512" height="92" alt="unnamed" src="https://github.com/user-attachments/assets/c71481e6-b3b5-4724-b315-38a6fafe4eac" />
+
+
+#### 🧠 Cortex – Threat Analysis Engine
+
+Cortex is an analytical engine that integrates seamlessly with TheHive and Shuffle. It provides automatic enrichment of incident data using analyzers.
+
+In this project:
+
+    Cortex uses analyzers such as VirusTotal to scan IPs, file hashes, and URLs received from TheHive or Shuffle.
+
+    It accelerates threat enrichment and supports decision-making for alert escalation.
+
+<img width="512" height="200" alt="unnamed" src="https://github.com/user-attachments/assets/e3b31623-7ec2-4165-812e-0c4081263212" />
+
+
+Created Cortex Analyzers (used in this project):
+
+    VirusTotal – IP Scan
+
+    VirusTotal – File Hash Lookup
+
+    VirusTotal – URL Scan
+
+<img width="512" height="303" alt="unnamed" src="https://github.com/user-attachments/assets/ac32b77f-7e37-45b3-b216-9dd3333f1ad9" />
+
+<img width="512" height="142" alt="unnamed" src="https://github.com/user-attachments/assets/c300c794-0c63-4c38-a57c-0c7c4c1167a2" />
+
+
+These analyzers help provide real-time risk context for each indicator involved in an alert.
+Automated Workflow with Shuffle
+
+Thanks to the advanced workflow design in Shuffle, high-severity alerts automatically trigger:
+
+    IP, file, and URL analysis via Cortex analyzers (e.g., VirusTotal),
+
+    Retrieval of scan results,
+
+    Push-back of enriched data into TheHive.
+
+<img width="274" height="512" alt="unnamed" src="https://github.com/user-attachments/assets/7ce37d6b-f29d-489a-bbe2-500b98a38c29" />
+
+<img width="512" height="142" alt="unnamed" src="https://github.com/user-attachments/assets/d57c7a2a-b7ac-404e-b973-7c887078e582" />
+
+
+This results in:
+
+    Faster analyst decision-making,
+
+    Improved visibility into potential threats,
+
+    Efficient SOC operations.
+
+⚠️ Important:
+
+If Docker containers for TheHive or Cortex fail to start, ensure correct permissions are applied to volumes and configuration files.
+<img width="512" height="153" alt="unnamed" src="https://github.com/user-attachments/assets/573d81db-ddfb-4022-866c-f129cf5ede2d" />
+```bash
+sudo chown -R 1000:1000 docker/.../elasticsearch/
+```
