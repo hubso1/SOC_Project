@@ -19,6 +19,14 @@ This project aims to build a complete Security Operations Center (SOC) environme
 
 This project serves an educational purpose, helping users explore the architecture, integration, and operation of tools commonly used in real-world SOC environments. It can be extended further and used as a base for experiments, development, and hands-on practice in threat detection and incident response.
 
+## 📚 Table of Contents
+
+- [Wazuh Installation](#installing-wazuh)
+- [🔄 Shuffle Workflow Expansion](#shuffle-workflow-expansion)
+- [🧠 Cortex and TheHive Integration](#cortex-and-thehive-integration)
+- [🧩 Conclusions and Further Development Possibilities](#conclusions-and-further-development-possibilities)
+
+
 ## SOC security system architecture diagram
 
 The following diagram presents the general architecture of a **Security Operations Center (SOC)** environment, encompassing components such as **SIEM, SOAR, DNS, and detection and response systems (IDS/IPS).** The system is built around a central Wazuh server, integrated with automation tools (Shuffle), threat intelligence and analysis (Cortex, VirusTotal), incident management (TheHive), and team communication (Slack). Endpoints (Linux, Windows) and the network are monitored and protected by Wazuh agents and the Suricata IDS. DNS traffic is filtered through a local Technitium DNS server.
