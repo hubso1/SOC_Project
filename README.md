@@ -159,7 +159,7 @@ A webhook is a basic mechanism for receiving data in Shuffle. In the context of 
 If SSL-related errors occur, you may temporarily disable SSL verification, though this is not recommended for production environments due to the associated security risks.
 Example error messages:
 Check for SSL-related log entries using:
-tail `/var/ossec/etc/ossec.conf` | grep SSL
+tail `/var/ossec/etc/ossec.conf | grep SSL`
 ```syslog
 2025/07/04 03:51:21 wazuh-integratord: ERROR: While running shuffle -> integrations. Output: requests.exceptions.SSLError: HTTPSConnectionPool(host='IP', port=3001): Max retries exceeded with url: /api/v1/hooks/API (Caused by SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1007)')))
 2025/07/04 03:53:08 wazuh-integratord: ERROR: While running shuffle -> integrations. Output: requests.exceptions.SSLError: HTTPSConnectionPool(host='IP', port=3443): Max retries exceeded with url: /api/v1/hooks/<API> (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1007)')))
@@ -167,7 +167,7 @@ tail `/var/ossec/etc/ossec.conf` | grep SSL
 
 🔧 Disabling SSL Verification in shuffle.py (Temporary Workaround)
 
-In the integration script located at /var/ossec/integrations/shuffle.py, locate the requests.post function. You can set the verify flag to **False** to bypass SSL verification (not recommended for production).
+In the integration script located at `/var/ossec/integrations/shuffle.py`, locate the requests.post function. You can set the verify flag to **False** to bypass SSL verification (not recommended for production).
 Example code adjustment:
 ```python
 def send_msg(msg: str, url: str) -> None:
@@ -300,9 +300,10 @@ This configuration is applied on the Wazuh Manager and is automatically distribu
 Giving execution permission to a script can pose a serious threat if the script contains malicious code (e.g., deleting or modifying critical files). Therefore, this action should be tightly controlled and monitored.
 
 Wazuh has built-in rules to detect permission changes, but you can also create custom FIM rules to fine-tune detection — for example, when execute permission (+x) is added to shell scripts.
+
 🔧 Custom Rule to Detect Execute Bit on Scripts
 
-File path: /var/ossec/etc/rules/fim_special.xml
+File path: `/var/ossec/etc/rules/fim_special.xml`
 
 ```xml
 <group name="syscheck">
@@ -565,7 +566,8 @@ Create a custom rule that triggers the firewall block based on Suricata detectio
 📉 Outcome
 
 <img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/56400781-2848-4137-a2a5-1f9be1f1b62f" />
-<img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/fa64ffe4-520d-45cb-8074-f34d39ebd71d" />
+
+<img width="512" height="67" alt="unnamed" src="https://github.com/user-attachments/assets/d13e3555-37dd-4e4f-9400-ad20d3424ec6" />
 
 When the scan is initiated from a malicious host and the rule is triggered:
 
@@ -579,6 +581,9 @@ When the scan is initiated from a malicious host and the rule is triggered:
 
 📴 No network connectivity remains between the source and destination host during the blocking period.
 
+<img width="512" height="130" alt="unnamed" src="https://github.com/user-attachments/assets/76c6c030-5fd2-461e-b5ad-610d84bb52b9" />
+
+
 ### 10. 📢 Integration of Wazuh with Slack for Real-Time Alerting
 
 Slack has been integrated as a communication channel for the security team to ensure real-time delivery of critical security notifications. Using the SOAR platform Shuffle, it is possible to automatically forward alerts from Wazuh directly to a designated Slack channel.
@@ -589,7 +594,7 @@ Slack has been integrated as a communication channel for the security team to en
 
 To enable Slack alerting, add the following integration block to the Wazuh manager configuration:
 
-File path: /var/ossec/etc/ossec.conf
+File path: `/var/ossec/etc/ossec.conf`
 
 ```xml
 <integration>
@@ -707,7 +712,6 @@ Thanks to the advanced workflow design in Shuffle, high-severity alerts automati
 
 <img width="274" height="512" alt="unnamed" src="https://github.com/user-attachments/assets/7ce37d6b-f29d-489a-bbe2-500b98a38c29" />
 
-
 <img width="512" height="142" alt="unnamed" src="https://github.com/user-attachments/assets/d57c7a2a-b7ac-404e-b973-7c887078e582" />
 
 
@@ -785,7 +789,7 @@ These alerts are forwarded to **TheHive** for review and correlation.
 
 When a **High severity** alert (severity ≥ 12) is detected, Shuffle performs the following actions:
 
-- Sends the alert to **TheHive** 🐝 where a new **Case** is automatically created
+- Sends the alert to **TheHive** where a new **Case** is automatically created
 - Sends an email notification to the designated SOC team or analyst
 
 This process increases awareness and allows the team to act quickly.
@@ -919,7 +923,7 @@ Example configuration for the built-in Log Exporter in Technitium:
 
 #### 🧩 Wazuh Agent: Enable DNS log collection
 
-Ensure the same path as used in the Log Exporter is referenced in ossec.conf:
+Ensure the same path as used in the Log Exporter is referenced in `ossec.conf`:
 
 ```xml
 <localfile>
