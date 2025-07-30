@@ -21,7 +21,7 @@ This project serves an educational purpose, helping users explore the architectu
 
 ## 📚 Table of Contents
 
-- [Wazuh Installation](#installing-wazuh)
+- [Wazuh Installation](#deployment-overview)
 - [🔄 Shuffle Workflow Expansion](#shuffle-workflow-expansion)
 - [🧠 Cortex and TheHive Integration](#cortex-and-thehive-integration)
 - [🧩 Conclusions and Further Development Possibilities](#conclusions-and-further-development-possibilities)
