@@ -6,6 +6,8 @@
 2. [SOC security system architecture diagram](#soc-security-system-architecture-diagram)
 3. [System Components Overview](#system-components-overview)
 4. [Deployment Overview 🚀](#deployment-overview)
+5. [Incident Response 🚨](#incident-response)
+6. [Conclusions and Further Development Possibilities](#conclusions-and-further-development-possibilities)
 
 ## Project Description
 
@@ -986,7 +988,36 @@ A configured local DNS server:
 
 ---
 
-## 🧩 Conclusions and Further Development Possibilities
+## Incident Response
+
+This section demonstrates how the SOC environment responds to real-world security incidents by leveraging the full integration between Wazuh, Suricata, TheHive, Cortex, and Shuffle.
+
+Incident response workflows are triggered automatically based on alert severity, rule matching, or correlation logic. Each response may include:
+
+- Alert enrichment using Cortex analyzers (e.g. VirusTotal, AbuseIPDB)
+- Case creation in TheHive with detailed observable data
+- Automatic tagging and classification (e.g. MITRE ATT&CK mapping)
+- Active Response actions (e.g. blocking IP, isolating host)
+- Email/Slack notifications for critical incidents
+- Timeline tracking and analyst collaboration
+
+### 🔍 Example Scenarios:
+
+- **Malicious File Detected on Endpoint**  
+  A Wazuh agent detects a suspicious file creation event on a Windows host. The file hash is automatically sent to VirusTotal via Cortex, and if confirmed as malicious, a case is created in TheHive with all relevant context. Shuffle triggers an email notification and blocks the hash via EDR.
+
+- **Suspicious DNS Activity**  
+  Technitium DNS logs show multiple blocked DNS queries to suspicious domains. Alerts are aggregated in Wazuh and correlated with known threat indicators. An incident is opened in TheHive and a case analyst is assigned automatically.
+
+- **Port Scanning Detected by Suricata**  
+  Suricata IDS detects Nmap-style scanning from a remote IP. The IP is added to a blocklist via Active Response and an alert is sent to Slack with details.
+
+> Screenshots and workflow diagrams will be included below for each case.
+
+
+---
+
+## Conclusions and Further Development Possibilities
 
 ### ✅ Conclusions
 
