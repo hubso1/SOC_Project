@@ -1046,7 +1046,7 @@ To improve detection capabilities for suspicious file downloads, a custom Wazuh 
 
 Custom rule defined in `/var/ossec/etc/rules/local_rules.xml`:
 
-```
+```xml
 <group name="audit">
   <rule id="100010" level="8">
     <if_sid>80700</if_sid>
