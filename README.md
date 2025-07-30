@@ -1046,9 +1046,8 @@ Wazuh's integration with VirusTotal enables automated analysis of downloaded fil
 **Local Rules (`local_rules.xml`):**  
 Custom rules were created to automate the response process based on the above alert IDs. Once triggered, they invoke an **Active Response script** to handle the threat.
 
-
 Active Response Script:
-A script named remove-threat.sh is automatically executed when the alert is detected. It performs the following:
+A script named `remove-threat.sh` is automatically executed when the alert is detected. It performs the following:
 
     Extracts the file hash and path.
 
@@ -1056,7 +1055,7 @@ A script named remove-threat.sh is automatically executed when the alert is dete
 
     If confirmed malicious → deletes the file.
 
-📄 Path: /var/ossec/active-response/bin/remove-threat.sh
+📄 Path: `/var/ossec/active-response/bin/remove-threat.sh`
 🚨 Alerting & Automation
 
     Alerts are pushed to Wazuh Dashboards for visibility.
@@ -1067,6 +1066,11 @@ A script named remove-threat.sh is automatically executed when the alert is dete
 
     All actions are logged for audit and compliance.
 
+<img width="512" height="84" alt="unnamed" src="https://github.com/user-attachments/assets/5ad74afd-44d7-485b-96a0-df58d9f1b4a6" />
+
+<img width="512" height="169" alt="unnamed" src="https://github.com/user-attachments/assets/18d97d43-36bc-479f-b782-17bbd42c687e" />
+
+<img width="512" height="297" alt="unnamed" src="https://github.com/user-attachments/assets/25b009fa-84f6-4f45-9f8a-5f63ea00daf4" />
 
 
 - **Suspicious DNS Activity**  
