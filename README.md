@@ -577,7 +577,7 @@ Create a custom rule that triggers the firewall block based on Suricata detectio
 
 <img width="512" height="150" alt="unnamed" src="https://github.com/user-attachments/assets/56400781-2848-4137-a2a5-1f9be1f1b62f" />
 
-<img width="512" height="67" alt="unnamed" src="https://github.com/user-attachments/assets/d13e3555-37dd-4e4f-9400-ad20d3424ec6" />
+<img width="791" height="100" alt="obraz" src="https://github.com/user-attachments/assets/ac8a90a2-0380-4461-b4a1-21f2588e30c1" />
 
 When the scan is initiated from a malicious host and the rule is triggered:
 
