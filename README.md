@@ -21,7 +21,7 @@ This project serves an educational purpose, helping users explore the architectu
 
 ## SOC security system architecture diagram
 
-The following diagram presents the general architecture of a Security Operations Center (SOC) environment, encompassing components such as SIEM, SOAR, DNS, and detection and response systems (IDS/IPS). The system is built around a central Wazuh server, integrated with automation tools (Shuffle), threat intelligence and analysis (Cortex, VirusTotal), incident management (TheHive), and team communication (Slack). Endpoints (Linux, Windows) and the network are monitored and protected by Wazuh agents and the Suricata IDS. DNS traffic is filtered through a local Technitium DNS server.
+The following diagram presents the general architecture of a **Security Operations Center (SOC)** environment, encompassing components such as **SIEM, SOAR, DNS, and detection and response systems (IDS/IPS).** The system is built around a central Wazuh server, integrated with automation tools (Shuffle), threat intelligence and analysis (Cortex, VirusTotal), incident management (TheHive), and team communication (Slack). Endpoints (Linux, Windows) and the network are monitored and protected by Wazuh agents and the Suricata IDS. DNS traffic is filtered through a local Technitium DNS server.
 
 <img width="512" height="362" alt="unnamed" src="https://github.com/user-attachments/assets/0b07ca1d-1ecb-4a23-a504-32bba53d4048" />
 
@@ -36,7 +36,7 @@ Central server managing all agents. Responsible for collecting, analyzing, and f
 Log storage and search component based on OpenSearch. Stores security logs for fast querying and visualization.
 
 ### [**Wazuh Dashboard**](https://wazuh.com/)
-Web-based visual interface (Wazuh UI/Kibana). Allows alert inspection, rule creation, dashboards, and visual analysis.
+Web-based visual interface. Allows alert inspection, rule creation, dashboards, and visual analysis.
 
 ### [**Wazuh Agent**](https://wazuh.com/)
 Lightweight agents installed on endpoints (Linux/Windows) that collect logs, monitor systems, and react to events.
