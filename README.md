@@ -17,58 +17,6 @@ This project aims to build a complete Security Operations Center (SOC) environme
 
     Visualize data flow and interaction between components in a modern SOC setup
 
-- [SOC Project 🛡️](#soc-project----)
-  * [Project Description](#project-description)
-  * [SOC security system architecture diagram](#soc-security-system-architecture-diagram)
-  * [📦 System Components Overview](#---system-components-overview)
-  * [🚀 Deployment Overview](#---deployment-overview)
-    + [1. Installing Wazuh](#1-installing-wazuh)
-    + [2. Installing Wazuh Agents](#2-installing-wazuh-agents)
-    + [3. Adding SOCFortress Rules to Wazuh](#3-adding-socfortress-rules-to-wazuh)
-    + [4. Installing Shuffle (SOAR) | Integration with Wazuh](#4-installing-shuffle-soar-integration-with-wazuh)
-    + [🧩 Wazuh Integration with Shuffle](#---wazuh-integration-with-shuffle)
-    + [5. 🗂️ Adding FIM (File Integrity Monitoring) Rules](#5-----adding-fim--file-integrity-monitoring--rules)
-    + [6. 🛡️ Advanced FIM (File Integrity Monitoring) Configuration](#6-----advanced-fim--file-integrity-monitoring--configuration)
-    + [🧩 Sample agent.conf Configuration](#---sample-agentconf-configuration)
-    + [7.🧰 Installing and Configuring Suricata IDS/IPS on an Endpoint | Integration with Wazuh](#7---installing-and-configuring-suricata-ids-ips-on-an-endpoint---integration-with-wazuh)
-    + [⚙️ Suricata Installation and Basic Setup](#---suricata-installation-and-basic-setup)
-    + [📦 Installing Emerging Threats Ruleset](#---installing-emerging-threats-ruleset)
-    + [📡 Integrating Suricata with Wazuh](#---integrating-suricata-with-wazuh)
-    + [8. 🦠 Integration with VirusTotal | Automated Malware Detection and Removal | Active Response](#8----integration-with-virustotal---automated-malware-detection-and-removal---active-response)
-    + [🔗 VirusTotal Engine Integration with Wazuh](#---virustotal-engine-integration-with-wazuh)
-      - [Operation of Active Response and automatic malicious file removal:](#operation-of-active-response-and-automatic-malicious-file-removal-)
-    + [9. 🔥 Active Response — Blocking Malicious Hosts via Firewall](#9----active-response---blocking-malicious-hosts-via-firewall)
-    + [10. 📢 Integration of Wazuh with Slack for Real-Time Alerting](#10----integration-of-wazuh-with-slack-for-real-time-alerting)
-    + [11. Installation and Configuration of TheHive and Cortex | Integration with Shuffle for Alert Management](#11-installation-and-configuration-of-thehive-and-cortex---integration-with-shuffle-for-alert-management)
-      - [🐝 TheHive – Incident Response Platform (IRP)](#---thehive---incident-response-platform--irp-)
-      - [Example JSON Alert Payload (advanced setup)](#example-json-alert-payload--advanced-setup-)
-      - [🧠 Cortex – Threat Analysis Engine](#---cortex---threat-analysis-engine)
-    + [12. 🔁  Workflow Enhancement in Shuffle](#12-----workflow-enhancement-in-shuffle)
-      - [🧩 Workflow Overview](#---workflow-overview)
-        * [Benefits:](#benefits-)
-      - [🟠 Severity-Based Alert Handling in Shuffle](#---severity-based-alert-handling-in-shuffle)
-      - [🛡️ File Integrity Monitoring (FIM) Alerts](#----file-integrity-monitoring--fim--alerts)
-      - [✉️ Automatic Email Notifications for High Alerts](#---automatic-email-notifications-for-high-alerts)
-    + [13. Installation and Configuration of Local DNS Server | Integration with Wazuh](#13-installation-and-configuration-of-local-dns-server---integration-with-wazuh)
-      - [Technitium DNS Server – Overview and Use Case](#technitium-dns-server---overview-and-use-case)
-      - [🔒 Why deploy a local DNS server and integrate it with Wazuh?](#---why-deploy-a-local-dns-server-and-integrate-it-with-wazuh-)
-      - [🛠️ DNS Server Installation](#----dns-server-installation)
-      - [🔗 Integration with Wazuh](#---integration-with-wazuh)
-        * [Add custom rules to `local_rules.xml`:](#add-custom-rules-to--local-rulesxml--)
-      - [🧩 Wazuh Agent: Enable DNS log collection](#---wazuh-agent--enable-dns-log-collection)
-  * [🧩 Conclusions and Further Development Possibilities](#---conclusions-and-further-development-possibilities)
-    + [✅ Conclusions](#--conclusions)
-    + [🚀 Further Development Opportunities](#---further-development-opportunities)
-      - [🔭 Expand Detection & Visibility](#---expand-detection---visibility)
-      - [🧠 Threat Intelligence Integration](#---threat-intelligence-integration)
-      - [🧪 Simulation & Attack Testing](#---simulation---attack-testing)
-      - [⚙️ Advanced Automation](#---advanced-automation)
-      - [📋 Audit & Compliance](#---audit---compliance)
-      - [🛡️ SOC Hardening](#----soc-hardening)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 This project serves an educational purpose, helping users explore the architecture, integration, and operation of tools commonly used in real-world SOC environments. It can be extended further and used as a base for experiments, development, and hands-on practice in threat detection and incident response.
 
 ## SOC security system architecture diagram
