@@ -2,7 +2,9 @@
 > **Open-source SOC** lab environment using tools like **Wazuh, Suricata, TheHive, Cortex, Shuffle and more.** Built for learning, threat detection, log analysis, and incident response.
 
 ## 📚 Table of Contents
-[Project Description](#project-description)
+1. [Project Description](#project-description)
+2. [SOC security system architecture diagram](soc-security-system-architecture-diagram)
+3. [System Components Overview](system-components-overview)
 
 ## Project Description
 
