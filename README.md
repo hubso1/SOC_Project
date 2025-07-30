@@ -806,5 +806,165 @@ Thanks to this automation design, high-level alerts are not only visible in dash
     📬 Email notifications to the SOC team
 
 This ensures faster response, better alert triage, and higher efficiency in incident handling.
+```
 
+### 13. Installation and Configuration of Local DNS Server | Integration with Wazuh
+
+#### Technitium DNS Server – Overview and Use Case
+
+[Technitium DNS Server](https://technitium.com/dns/) is an open-source DNS server that can function both as a **recursive** and **authoritative** DNS resolver. It is easy to set up, works out of the box, and provides a user-friendly web interface.
+
+By default, most systems use DNS provided by ISPs, which allows them to:
+
+- Track visited domains
+- Manipulate traffic (e.g., blocking, redirecting, or injecting content)
+
+Technitium DNS mitigates these issues by supporting encrypted DNS protocols like **DNS-over-TLS** and **DNS-over-HTTPS**, enhancing both privacy and control.
+
+
+#### 🔒 Why deploy a local DNS server and integrate it with Wazuh?
+
+- **Privacy & Security**: Avoids external DNS control (e.g., ISP), ensuring local management of DNS traffic.
+- **DNS visibility and analysis**: Integration with Wazuh enables real-time monitoring and anomaly detection.
+- **Early threat detection**: Malware often relies on DNS (e.g., beaconing, phishing), and DNS logs help identify such behaviors.
+- **Centralized logging and inspection**: DNS logs are forwarded to Wazuh for correlation with other sources (agents, Suricata, EDR).
+
+
+#### 🛠️ DNS Server Installation
+
+Installation guide:  
+👉 [https://technitium.com/dns/](https://technitium.com/dns/)
+
+#### 🔗 Integration with Wazuh
+
+##### Add custom rules to `local_rules.xml`:
+
+```xml
+<group name="technitium_dns, dns, custom">
+    <rule id="100301" level="3">
+        <decoded_as>json</decoded_as>
+        <field name="dns.type">dns</field>
+        <description>Technitium DNS logs grouped.</description>
+    </rule>
+
+    <rule id="100302" level="3">
+        <if_sid>100301</if_sid>
+        <field name="dns.responseType" negate="yes">Blocked</field>
+        <description>Technitium DNS: Allowed</description>
+    </rule>
+
+    <rule id="100303" level="3">
+        <if_sid>100301</if_sid>
+        <field name="dns.responseType">Blocked</field>
+        <description>Technitium DNS: Blocked</description>
+    </rule>
+
+    <rule id="100304" level="12" frequency="10" timeframe="30">
+        <if_matched_sid>100303</if_matched_sid>
+        <same_srcip/>
+        <description>Technitium DNS: Multiple DNS requests blocked from same IP.</description>
+    </rule>
+    
+    <rule id="100305" level="12" frequency="5" timeframe="120">
+        <if_matched_sid>100302</if_matched_sid>
+        <same_srcip/>
+        <field name="dns.question.questionName" type="pcre2">[\w\.]{30,}</field>
+        <description>Technitium DNS: Possible exfil (multiple long queries)</description>
+    </rule>
+
+    <rule id="100306" level="12" frequency="5" timeframe="120">
+        <if_matched_sid>100302</if_matched_sid>
+        <same_srcip/>
+        <field name="dns.question.questionName" type="pcre2">^(?:[A-Za-z0-9+]{4})+(?:[A-Za-z0-9+]{2}==|[A-Za-z0-9+]{3}=)?$</field>
+        <description>Technitium DNS: Possible exfil (base64 encoded query)</description>
+    </rule>
+
+    <rule id="100307" level="12" frequency="5" timeframe="120">
+        <if_matched_sid>100302</if_matched_sid>
+        <same_srcip/>
+        <field name="dns.question.questionName" type="pcre2">^(?:[A-Z2-7]{8})+(?:[A-Z2-7]{2}======|[A-Z2-7]{4}====|[A-Z2-7]{5}===|[A-Z2-7]{7}=)?$</field>
+        <description>Technitium DNS: Possible exfil (base32 encoded query)</description>
+    </rule>
+
+    <rule id="100308" level="15" frequency="5" timeframe="150" ignore="60">
+        <if_matched_sid>100304</if_matched_sid>
+        <same_srcip/>
+        <description>Technitium DNS: Multiple DNS requests blocked from same IP.</description>
+        <description>The events are too high, therefore to be ignored 60 seconds to prevent issues</description>
+    </rule>
+
+    <rule id="100309" level="12">
+        <if_sid>100302</if_sid>
+        <list field="dns.question.questionName" lookup="match_key">etc/lists/warning_list</list>
+        <description>Technitium DNS: Malicious domain is allowed. Check blocking configuration.</description>
+    </rule>
+</group>
+```
+
+Config file path: `/var/ossec/etc/rules/local_rules.xml`
+
+🧾 Log export in JSON format
+
+Example configuration for the built-in Log Exporter in Technitium:
+
+```json
+{
+  "maxQueueSize": 1000000,
+  "file": {
+    "path": "/var/log/dns/dns_logs.json",
+    "enabled": true
+  }
+}
+```
+
+#### 🧩 Wazuh Agent: Enable DNS log collection
+
+Ensure the same path as used in the Log Exporter is referenced in ossec.conf:
+
+```xml
+<localfile>
+   <log_format>json</log_format>
+   <only-future-events>no</only-future-events>
+   <location>/var/log/dns/dns_logs.json</location>
+   <out_format>{"dns": $(log) }</out_format>
+   <label key="type">dns</label> 
+</localfile>
+```
+
+File path: `/var/ossec/etc/ossec.conf`
+
+Blocking Suspicious and Malicious Domains:
+
+<img width="512" height="202" alt="unnamed" src="https://github.com/user-attachments/assets/0ddc7790-a2c7-4244-8886-27b25a9a3599" />
+
+Technitium DNS enables fast blocking of known malicious domains via various public and custom blacklists.
+
+Result:
+
+<img width="512" height="184" alt="unnamed" src="https://github.com/user-attachments/assets/1ef548fa-cb95-4360-8b17-9f1a3c41b7bc" />
+
+
+
+To apply the DNS server system-wide, configure it in: `/etc/resolv.conf`
+
+```bash
+nameserver <DNS_IP-ADDRESS>
+```
+
+📊 Creating DNS Dashboard in Wazuh
+
+Thanks to this integration, a custom Local DNS Dashboard can be built in Wazuh to visualize and analyze DNS activity across the network.
+
+📌 Reference:
+https://zaferbalkan.com/technitium/
+
+✅ Final Result
+
+A configured local DNS server:
+
+    Blocks access to blacklisted domains
+
+    Exports enriched DNS logs
+
+    Sends data to Wazuh for advanced correlation and alerting
 
