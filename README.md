@@ -1003,8 +1003,71 @@ Incident response workflows are triggered automatically based on alert severity,
 
 ### 🔍 Example Scenarios:
 
-- **Malicious File Detected on Endpoint**  
-  A Wazuh agent detects a suspicious file creation event on a Windows host. The file hash is automatically sent to VirusTotal via Cortex, and if confirmed as malicious, a case is created in TheHive with all relevant context. Shuffle triggers an email notification and blocks the hash via EDR.
+#### Use Case #2 – Suspicious File Download
+
+**🎯 Objective:**  
+Evaluate the SIEM system's capability to detect and respond to suspicious file downloads. The goal is to determine whether the environment can successfully identify potential threats from unknown or malicious sources.
+
+**🧪 Environment Setup:**
+- **Endpoint Agent:** Ubuntu Server 24.04
+- **SIEM:** Wazuh
+- **Wazuh Rules:** `10092` (Level 12), `87105` (Level 12)
+
+### 🔁 Incident Flow:
+
+<img width="512" height="78" alt="unnamed" src="https://github.com/user-attachments/assets/fa04ba88-d79e-4cc9-a0ce-3b17e133f8ad" />
+
+1. A user downloads a suspicious file using the `curl` command.
+2. The download starts immediately, and the file is saved in the current working directory.
+3. Once the download is complete, Wazuh detects the activity via local rules.
+4. Alerts are generated with `rule.id: 87105` and `rule.id: 10092`.
+5. Wazuh triggers **Active Response**, invoking a script to delete the file.
+6. The incident is enriched with VirusTotal data and logged.
+
+
+### ⚠️ Detection Mechanism
+
+Wazuh generated:
+- `rule.id: 87105` – triggered on suspicious download behavior.
+
+<img width="512" height="96" alt="unnamed" src="https://github.com/user-attachments/assets/97c55ec0-1586-497d-a909-4cdee278be05" />
+
+
+- `rule.id: 10092` – triggered by VirusTotal detection indicating a malicious file.
+
+Wazuh's integration with VirusTotal enables automated analysis of downloaded files using multi-engine reputation scoring, enhancing detection accuracy.
+
+<img width="512" height="62" alt="unnamed" src="https://github.com/user-attachments/assets/c9a85405-a4b0-4ce4-9677-452118fb453c" />
+
+<img width="512" height="344" alt="unnamed" src="https://github.com/user-attachments/assets/89d6b5d8-2afb-435e-9bdf-4d32a3ae2157" />
+
+### 🔐 Response Actions
+
+**Local Rules (`local_rules.xml`):**  
+Custom rules were created to automate the response process based on the above alert IDs. Once triggered, they invoke an **Active Response script** to handle the threat.
+
+
+Active Response Script:
+A script named remove-threat.sh is automatically executed when the alert is detected. It performs the following:
+
+    Extracts the file hash and path.
+
+    Queries VirusTotal for threat classification.
+
+    If confirmed malicious → deletes the file.
+
+📄 Path: /var/ossec/active-response/bin/remove-threat.sh
+🚨 Alerting & Automation
+
+    Alerts are pushed to Wazuh Dashboards for visibility.
+
+    VirusTotal data is attached to the event.
+
+    Slack or email notifications (optional) can be triggered.
+
+    All actions are logged for audit and compliance.
+
+
 
 - **Suspicious DNS Activity**  
   Technitium DNS logs show multiple blocked DNS queries to suspicious domains. Alerts are aggregated in Wazuh and correlated with known threat indicators. An incident is opened in TheHive and a case analyst is assigned automatically.
