@@ -337,7 +337,8 @@ chmod +x script.sh
 ```
 
 After running this command, the alert will be visible in the Wazuh dashboard.
-<img width="512" height="147" alt="unnamed" src="https://github.com/user-attachments/assets/26237bf8-e8c1-4e59-a2af-873914c16f03" />
+
+<img width="821" height="191" alt="obraz" src="https://github.com/user-attachments/assets/d2088408-cbc1-4038-a70a-37abf0ed9720" />
 
 📚 Source: [Wazuh FIM Documentation](https://documentation.wazuh.com/current/user-manual/capabilities/file-integrity/advanced-settings.html)
 
