@@ -974,3 +974,64 @@ A configured local DNS server:
 
     Sends data to Wazuh for advanced correlation and alerting
 
+---
+
+## 🧩 Conclusions and Further Development Possibilities
+
+### ✅ Conclusions
+
+The project of building a **Security Operations Center (SOC)** using open-source tools such as **Wazuh**, **Suricata**, **Shuffle**, **TheHive**, **Cortex**, **Technitium DNS**, and external services like **VirusTotal** or **Slack** demonstrates that it is possible to build a **fully functional detection, analysis, and response system** without the need for expensive, commercial solutions.
+
+The implemented SOC environment is capable of:
+
+- Collecting, correlating, and analyzing logs from Windows and Linux agents  
+- Detecting anomalies and network attacks using **Suricata (IDS)**  
+- Automatically responding to threats (e.g., blocking IPs via **Active Response**)  
+- Managing and analyzing incidents using **TheHive** and **Cortex**  
+- Automating actions via **SOAR platform (Shuffle)**  
+- Integrating with **Threat Intelligence services** like VirusTotal, AbuseIPDB  
+- Visualizing data based on **MITRE ATT&CK**  
+- Providing ready-to-use dashboards for **PCI DSS**, **GDPR**, **HIPAA**, **NIST 800-53**  
+
+This project shows that **open-source tools are fully functional and integrable** into a cohesive IT security environment.  
+However, deploying such a system **requires time, technical knowledge**, and a clear understanding of architecture and data flow between components.
+
+A central role in this setup is played by **Wazuh**, which acts as the core monitoring and response engine.  
+It is a **flexible and powerful solution** that can be extended with custom integrations, rules, dashboards, and **Active Response** scenarios.  
+Wazuh is well-suited to serve as a **central SIEM/EDR/Compliance platform** in environments of varying complexity.
+
+---
+
+### 🚀 Further Development Opportunities
+
+#### 🔭 Expand Detection & Visibility
+
+- Add more sensors like **Zeek**, **Sysmon**, or **OSQuery**  
+- Increase endpoint telemetry and detection coverage  
+
+#### 🧠 Threat Intelligence Integration
+
+- Integrate **MISP** platform and connect to external **IOC feeds**  
+- Automatically enrich alerts with external context (IP reputation, domains, malware hashes)  
+
+#### 🧪 Simulation & Attack Testing
+
+- Implement **attack simulations**, purple teaming, and detection validation via adversary emulation  
+
+#### ⚙️ Advanced Automation
+
+- Build complex workflows in **Shuffle** to automate escalation, tagging, response, and reporting  
+- Integrate with **ITSM platforms**, email systems, **Active Directory**, or **SIEM** tools  
+
+#### 📋 Audit & Compliance
+
+- Create custom **audit dashboards** tailored to organizational requirements  
+- Generate **scheduled reports** directly from dashboards or **Cortex**  
+
+#### 🛡️ SOC Hardening
+
+- Secure components and agents (TLS encryption, **RBAC roles**, access control, file integrity monitoring)  
+- Implement **traffic segmentation**, honeypots, and isolate critical services  
+
+---
+
