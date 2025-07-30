@@ -5,6 +5,7 @@
 1. [Project Description](#project-description)
 2. [SOC security system architecture diagram](#soc-security-system-architecture-diagram)
 3. [System Components Overview](#system-components-overview)
+4. [Deployment Overview 🚀](#deployment-overview)
 
 ## Project Description
 
@@ -32,7 +33,7 @@ The following diagram presents the general architecture of a **Security Operatio
 
 ---
 
-## 📦 System Components Overview
+## System Components Overview
 
 ### [**Wazuh Server**](https://wazuh.com/)
 Central server managing all agents. Responsible for collecting, analyzing, and forwarding logs from endpoints, as well as managing security policies and active responses.
@@ -72,7 +73,7 @@ Internal DNS server deployed to monitor DNS queries. Enables DNS traffic visibil
 
 ---
 
-## 🚀 Deployment Overview
+## Deployment Overview
 
 ### 1. Installing Wazuh
 
