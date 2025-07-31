@@ -717,7 +717,7 @@ Created Cortex Analyzers (used in this project):
 
     VirusTotal – URL Scan
 
-<img width="512" height="303" alt="unnamed" src="https://github.com/user-attachments/assets/ac32b77f-7e37-45b3-b216-9dd3333f1ad9" />
+<img width="1465" height="746" alt="obraz" src="https://github.com/user-attachments/assets/9c844505-add2-4582-8fd8-3cd2ad891802" />
 
 These analyzers help provide real-time risk context for each indicator involved in an alert.
 Automated Workflow with Shuffle
