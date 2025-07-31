@@ -31,7 +31,7 @@ This project serves an educational purpose, helping users explore the architectu
 
 The following diagram presents the general architecture of a **Security Operations Center (SOC)** environment, encompassing components such as **SIEM, SOAR, DNS, and detection and response systems (IDS/IPS).** The system is built around a central Wazuh server, integrated with automation tools (Shuffle), threat intelligence and analysis (Cortex, VirusTotal), incident management (TheHive), and team communication (Slack). Endpoints (Linux, Windows) and the network are monitored and protected by Wazuh agents and the Suricata IDS. DNS traffic is filtered through a local Technitium DNS server.
 
-<img width="512" height="362" alt="unnamed" src="https://github.com/user-attachments/assets/0b07ca1d-1ecb-4a23-a504-32bba53d4048" />
+<img width="1654" height="1169" alt="soc drawio" src="https://github.com/user-attachments/assets/299fb3ac-ac75-4c1c-9b20-9bed0eea39aa" />
 
 ---
 
