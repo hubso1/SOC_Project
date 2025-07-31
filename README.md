@@ -747,7 +747,11 @@ This results in:
 ⚠️ Important:
 
 If Docker containers for TheHive or Cortex fail to start, ensure correct permissions are applied to volumes and configuration files.
+
+
 <img width="512" height="153" alt="unnamed" src="https://github.com/user-attachments/assets/573d81db-ddfb-4022-866c-f129cf5ede2d" />
+
+
 ```bash
 sudo chown -R 1000:1000 docker/.../elasticsearch/
 ```
@@ -961,7 +965,7 @@ File path: `/var/ossec/etc/ossec.conf`
 
 Blocking Suspicious and Malicious Domains:
 
-<img width="512" height="202" alt="unnamed" src="https://github.com/user-attachments/assets/0ddc7790-a2c7-4244-8886-27b25a9a3599" />
+<img width="1337" height="581" alt="obraz" src="https://github.com/user-attachments/assets/f8d62fba-5adc-47be-89a1-cb58b8a65fc5" />
 
 Technitium DNS enables fast blocking of known malicious domains via various public and custom blacklists.
 
@@ -1099,8 +1103,7 @@ To test detection:
 
 <img width="647" height="82" alt="obraz" src="https://github.com/user-attachments/assets/5e0c1181-629b-4e78-80fe-134b910acceb" />
 
-<img width="1086" height="146" alt="obraz" src="https://github.com/user-attachments/assets/07a5ba31-c1b2-4535-8db5-fa07e4a44090" />
-
+<img width="1328" height="186" alt="obraz" src="https://github.com/user-attachments/assets/9ac33a03-f02e-43dc-9b01-b59aa92b2d4e" />
 
 This should trigger a high-severity alert due to the presence of nc in the suspicious-programs list with severity level "red".
 
@@ -1147,15 +1150,14 @@ Evaluate the SIEM system's capability to detect and respond to suspicious file d
 
 Wazuh generated:
 - `rule.id: 87105` – triggered on suspicious download behavior.
-
-<img width="512" height="96" alt="unnamed" src="https://github.com/user-attachments/assets/97c55ec0-1586-497d-a909-4cdee278be05" />
-
+- 
+<img width="1573" height="241" alt="obraz" src="https://github.com/user-attachments/assets/b6988f12-0e8c-428d-bed6-2138c0e2ae67" />
 
 - `rule.id: 10092` – triggered by VirusTotal detection indicating a malicious file.
 
 Wazuh's integration with VirusTotal enables automated analysis of downloaded files using multi-engine reputation scoring, enhancing detection accuracy.
 
-<img width="512" height="62" alt="unnamed" src="https://github.com/user-attachments/assets/c9a85405-a4b0-4ce4-9677-452118fb453c" />
+<img width="1196" height="143" alt="obraz" src="https://github.com/user-attachments/assets/aaf9cf2c-0330-4517-94bf-c7a5d4daf343" />
 
 <img width="512" height="344" alt="unnamed" src="https://github.com/user-attachments/assets/89d6b5d8-2afb-435e-9bdf-4d32a3ae2157" />
 
