@@ -91,8 +91,8 @@ For larger and production-grade deployments, it is possible to deploy multiple I
 ### 2. Installing Wazuh Agents
 <img width="512" height="157" alt="unnamed" src="https://github.com/user-attachments/assets/61a8b2b9-9571-423f-92c4-9effb71a5271" />
 
-If any issues occur during agent installation, it's recommended to check the log file: _`/var/ossec/etc/ossec.log`_
-<img width="512" height="96" alt="unnamed" src="https://github.com/user-attachments/assets/c53a5e6b-41a1-4700-98b1-9b02b3696558" />
+If any issues occur during agent installation, it's recommended to check the log file: _`/var/ossec/logs/ossec.log`_
+<img width="1187" height="213" alt="obraz" src="https://github.com/user-attachments/assets/1f86c955-1511-429d-9f3a-c82485a66d3f" />
 
 #### 🛠️ Common Issue: Duplicate Hostname
 
