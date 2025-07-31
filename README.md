@@ -126,7 +126,9 @@ To use agentless monitoring, Wazuh requires an SSH connection from the Wazuh man
 - Use of tested, community-backed threat signatures
 
 By adding these rules to Wazuh, you extend your environment’s visibility and response capabilities with minimal configuration overhead.
-<img width="512" height="206" alt="unnamed" src="https://github.com/user-attachments/assets/31ca5faf-a5de-495a-8cd8-be90d293d13f" />
+
+<img width="1890" height="883" alt="obraz" src="https://github.com/user-attachments/assets/ba55c993-5bdf-45f6-ab30-f67065b02800" />
+
 
 ### 4. Installing Shuffle (SOAR) | Integration with Wazuh
 
