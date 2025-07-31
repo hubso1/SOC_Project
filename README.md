@@ -685,15 +685,13 @@ Example Alert Visualization in TheHive
 
     High severity alerts, escalated as cases, are visible within the TheHive dashboard for review and tracking.
 
-<img width="512" height="63" alt="unnamed" src="https://github.com/user-attachments/assets/2fe50a63-c740-4951-b5ad-ba1a403c1566" />
+<img width="1751" height="143" alt="obraz" src="https://github.com/user-attachments/assets/55f0b375-218d-4abc-ae6f-e63d24faec27" />
 
-<img width="512" height="185" alt="unnamed" src="https://github.com/user-attachments/assets/9c09e53d-271e-40a1-aaab-0a51511d9f0e" />
+<img width="1497" height="596" alt="obraz" src="https://github.com/user-attachments/assets/60e86b20-83e7-4f21-b74c-202cb3cadc85" />
 
-<img width="512" height="71" alt="unnamed" src="https://github.com/user-attachments/assets/b849f33b-5f82-4191-b50d-fe480ce4a4cc" />
+<img width="1768" height="156" alt="obraz" src="https://github.com/user-attachments/assets/538afebb-36d4-4665-af5b-329a51d4dae7" />
 
-<img width="512" height="95" alt="unnamed" src="https://github.com/user-attachments/assets/d939da2e-3897-4501-a4f5-f1d9f451da49" />
-
-<img width="512" height="92" alt="unnamed" src="https://github.com/user-attachments/assets/c71481e6-b3b5-4724-b315-38a6fafe4eac" />
+<img width="1445" height="527" alt="obraz" src="https://github.com/user-attachments/assets/9d48ac0b-0287-49e1-80af-2c449a08d048" />
 
 
 #### 🧠 Cortex – Threat Analysis Engine
@@ -807,7 +805,8 @@ These alerts form a separate branch in the Shuffle workflow. They are treated as
 
 Example alert:
 
-<img width="512" height="222" alt="unnamed" src="https://github.com/user-attachments/assets/2f0d9750-fee8-41b6-be83-000ff1b74676" />
+<img width="1747" height="427" alt="obraz" src="https://github.com/user-attachments/assets/74646e0e-1167-43c3-aefe-fa435174332e" />
+
 
 These alerts are forwarded to **TheHive** for review and correlation.
 
