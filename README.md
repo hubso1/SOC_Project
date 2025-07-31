@@ -520,11 +520,14 @@ The following configuration enables the Active Response mechanism on the Wazuh s
   
   Downloading the malicious file:
 
-<img width="512" height="59" alt="unnamed" src="https://github.com/user-attachments/assets/96ed418e-3239-4623-b031-b36ce3811ce7" />
+<img width="1551" height="241" alt="obraz" src="https://github.com/user-attachments/assets/30b10609-6cf4-4398-bb92-5837d5c90a28" />
 
-<img width="1056" height="138" alt="obraz" src="https://github.com/user-attachments/assets/6d30f5f6-408e-4203-8653-93c674e37e36" />
+<img width="1313" height="173" alt="obraz" src="https://github.com/user-attachments/assets/c0e8ca8d-24f2-4930-89a5-86028b80fc10" />
 
-<img width="512" height="91" alt="unnamed" src="https://github.com/user-attachments/assets/290a31d6-64fb-4b72-878a-0375df9a2ed0" />
+<img width="1210" height="266" alt="obraz" src="https://github.com/user-attachments/assets/54d7f873-474a-436c-b1bc-b97f6162df0a" />
+
+<img width="1775" height="341" alt="obraz" src="https://github.com/user-attachments/assets/046a16fb-8863-4a3a-aa56-23ea4b9370db" />
+
 
 ### 9. 🔥 Active Response — Blocking Malicious Hosts via Firewall
 
