@@ -705,8 +705,8 @@ In this project:
 
     It accelerates threat enrichment and supports decision-making for alert escalation.
 
-<img width="512" height="200" alt="unnamed" src="https://github.com/user-attachments/assets/e3b31623-7ec2-4165-812e-0c4081263212" />
 
+<img width="1862" height="497" alt="obraz" src="https://github.com/user-attachments/assets/057e2619-aa70-4368-8704-48109a821145" />
 
 Created Cortex Analyzers (used in this project):
 
@@ -732,7 +732,11 @@ Thanks to the advanced workflow design in Shuffle, high-severity alerts automati
 <img width="274" height="512" alt="unnamed" src="https://github.com/user-attachments/assets/7ce37d6b-f29d-489a-bbe2-500b98a38c29" />
 
 
-<img width="512" height="142" alt="unnamed" src="https://github.com/user-attachments/assets/d57c7a2a-b7ac-404e-b973-7c887078e582" />
+<img width="1256" height="247" alt="obraz" src="https://github.com/user-attachments/assets/e6144afc-62a6-452c-b10a-08ee3cf6405e" />
+
+Example output of malicious analysis:
+
+<img width="1890" height="742" alt="obraz" src="https://github.com/user-attachments/assets/fa3b67df-c184-4666-becb-50200ecfd2ba" />
 
 
 This results in:
