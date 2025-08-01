@@ -1111,6 +1111,12 @@ To test detection:
 
 This should trigger a high-severity alert due to the presence of nc in the suspicious-programs list with severity level "red".
 
+
+### **Wazuh agents** summary
+
+<img width="2032" height="382" alt="obraz" src="https://github.com/user-attachments/assets/c08617f4-9d05-45f9-8544-00717257434a" />
+
+
 ---
 
 ## Incident Response
