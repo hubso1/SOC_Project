@@ -1258,9 +1258,9 @@ nodes:
   # Wazuh indexer nodes
   indexer:
 	- name: wazuh1
-  	ip: "10.0.110.93"
+  	ip: "<wazuh1-ip>"
 	- name: wazuh2
-  	ip: "10.0.110.94"
+  	ip: "<wazuh2-ip>"
 	#- name: node-3
 	#  ip: "<indexer-node-ip>"
  
@@ -1269,10 +1269,10 @@ nodes:
   # node, each one must have a node_type
   server:
 	- name: wazuh1
-  	ip: "10.0.110.93"
+  	ip: "<wazuh1-ip>"
   	node_type: master
 	- name: wazuh2
-  	ip: "10.0.110.94"
+  	ip: "<wazuh2-ip>"
   	node_type: worker
 	#- name: wazuh-3
 	#  ip: "<wazuh-manager-ip>"
@@ -1281,7 +1281,7 @@ nodes:
   # Wazuh dashboard nodes
   dashboard:
 	- name: wazuh1
-  	ip: "10.0.110.93"
+  	ip: "<wazuh1-ip>"
 ```
 
 3. Generating configuration files and changing permissions (master)
