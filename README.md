@@ -1011,7 +1011,7 @@ A configured local DNS server:
 
     Sends data to Wazuh for advanced correlation and alerting
 
-### Incident Detection with Auditd and Wazuh
+### 14. Incident Detection with Auditd and Wazuh
 
 **Auditd** is a native Linux auditing tool used to track system activity and user behavior. In this use case, we leverage Auditd on an Ubuntu endpoint to monitor and alert on the execution of suspicious commands by privileged users.
 
