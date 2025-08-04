@@ -81,6 +81,7 @@ Internal DNS server deployed to monitor DNS queries. Enables DNS traffic visibil
 ### 1. Installing Wazuh
 
 In this setup, both the Wazuh Server and the Indexer component are installed on the same host. This simplifies configuration and is commonly used in test or small-scale environments.
+It can be also installed in [cluster mode](#cluster).
 
 For larger and production-grade deployments, it is possible to deploy multiple Indexer instances distributed across different hosts. This architecture allows for system scaling, improved performance, and high availability. Such an approach enables efficient management of large volumes of data and better support for distributed environments.
 
@@ -1226,6 +1227,122 @@ A script named `remove-threat.sh` is automatically executed when the alert is de
 
 **User Management Control Dashboard:**
 <img width="2556" height="1015" alt="obraz" src="https://github.com/user-attachments/assets/18de06a5-7e35-440d-a0c0-7ade40d90ba8" />
+
+---
+
+## Cluster
+### Wazuh can also be installed in a cluster to properly distribute the load across multiple indexers and servers.
+
+Installation guide:
+
+### Cluster Installation and Configuration – Wazuh
+
+Infrastructure Example:
+
+Machines:
+1. wazuh1 – dashboard, wazuh-server, wazuh-indexer, master node
+2. wazuh2 – dashboard, wazuh-server, wazuh-indexer, worker node
+
+Cluster Installation and Configuration 
+### Steps:
+
+1. Installation of the script on “machine no. 1 - master node”
+```bash
+curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh
+curl -sO https://packages.wazuh.com/4.12/config.yml
+```
+
+2. Editing the `config.yml` file - for your own infrastructure (on the master machine 
+```yml
+nodes:
+  # Wazuh indexer nodes
+  indexer:
+	- name: wazuh1
+  	ip: "10.0.110.93"
+	- name: wazuh2
+  	ip: "10.0.110.94"
+	#- name: node-3
+	#  ip: "<indexer-node-ip>"
+ 
+  # Wazuh server nodes
+  # If there is more than one Wazuh server
+  # node, each one must have a node_type
+  server:
+	- name: wazuh1
+  	ip: "10.0.110.93"
+  	node_type: master
+	- name: wazuh2
+  	ip: "10.0.110.94"
+  	node_type: worker
+	#- name: wazuh-3
+	#  ip: "<wazuh-manager-ip>"
+	#  node_type: worker
+ 
+  # Wazuh dashboard nodes
+  dashboard:
+	- name: wazuh1
+  	ip: "10.0.110.93"
+```
+
+3. Generating configuration files and changing permissions (master)
+```bash
+bash wazuh-install.sh --generate-config-files
+chmod 744 wazuh-install-files.tar
+```
+
+4. Transfer the wazuh-install-files.tar file (generated on the master node) to each cluster in the SIEM infrastructure from which the installation will be run.
+For example, scp:
+```bash
+scp /root/wazuh-install-files.tar root@<IP>:/root
+```
+
+5. Opening the ports necessary for Wazuh to communicate and function properly (all nodes)
+
+<img width="1130" height="792" alt="obraz" src="https://github.com/user-attachments/assets/0ec054a4-5c86-4ec0-b944-2de3f406fcae" />
+
+<img width="960" height="487" alt="obraz" src="https://github.com/user-attachments/assets/796550d9-d358-46e6-bb69-40e44128920a" />
+
+6. Installing the wazuh-indexer service on machine 1
+
+It is important that the `node-name` is the same as in the `config.yml` configuration.
+
+```bash
+bash wazuh-install.sh --wazuh-indexer <node-name>
+```
+
+7. Installing the setup script and indexer service on machine no.2
+
+```bash
+curl -sO https://packages.wazuh.com/4.12/config.yml
+
+bash wazuh-install.sh --wazuh-indexer <node-name>
+```
+
+8. Starting the cluster and checking its status on machine no. 1
+
+```bash
+bash wazuh-install.sh --start-cluster
+tar -axf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt -O | grep -P "\'admin\'" -A 1
+curl -k -u admin:password https://<node1-ip>:9200
+curl -k -u admin:password https://<node1-ip>:9200/_cat/nodes?v
+```
+
+<img width="1340" height="66" alt="obraz" src="https://github.com/user-attachments/assets/c8580283-a4fb-4c5e-84a1-dcc92ff1ef99" />
+
+9. Installing wazuh-server and wazuh-dashboard on machine no.1
+
+```bash
+bash wazuh-install.sh --wazuh-server <node-name>
+bash wazuh-install.sh --wazuh-dashboard <node-name>
+```
+
+10. Installing wazuh-server on machine no.2
+
+```bash
+bash wazuh-install.sh --wazuh-server wazuh2
+```
+
+<img width="1530" height="565" alt="obraz" src="https://github.com/user-attachments/assets/15245e93-4cda-4f62-951b-6ae6cdf593d8" />
 
 ---
 
