@@ -1213,12 +1213,17 @@ A script named `remove-threat.sh` is automatically executed when the alert is de
 
 ---
 ## More Custom Dashboards
+
+SSH Dashboard:
 <img width="2548" height="1171" alt="obraz" src="https://github.com/user-attachments/assets/1b82b342-1e80-46a2-8b31-9e6217698402" />
 
+Overall Dashboard:
 <img width="2542" height="1122" alt="obraz" src="https://github.com/user-attachments/assets/8a1b4c8d-630b-459c-af25-b6b0af69113d" />
 
+File Integrity Monitoring Dashboard:
 <img width="2551" height="1008" alt="obraz" src="https://github.com/user-attachments/assets/46b01613-55af-46d1-94b5-7b362add846d" />
 
+User Management Control Dashboard:
 <img width="2556" height="1015" alt="obraz" src="https://github.com/user-attachments/assets/18de06a5-7e35-440d-a0c0-7ade40d90ba8" />
 
 ---
