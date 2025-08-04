@@ -654,7 +654,8 @@ TheHive is a powerful IRP designed for managing cybersecurity incidents. It allo
 - Only `High` severity alerts are automatically escalated to full **cases**, requiring manual analysis by SOC analysts.
 - This setup enables initial classification and helps reduce **false positives**, improving alert triage efficiency.
 
-<img width="512" height="338" alt="unnamed" src="https://github.com/user-attachments/assets/e5d4cacb-097e-4102-844e-27e150074d0e" />
+  
+<img width="2190" height="1132" alt="obraz" src="https://github.com/user-attachments/assets/b4e80e8b-a92e-4c5f-b94d-ba28dc0f91b1" />
 
 #### Example JSON Alert Payload (advanced setup)
 
@@ -1196,7 +1197,7 @@ A script named `remove-threat.sh` is automatically executed when the alert is de
 
     All actions are logged for audit and compliance.
 
-<img width="512" height="84" alt="unnamed" src="https://github.com/user-attachments/assets/5ad74afd-44d7-485b-96a0-df58d9f1b4a6" />
+<img width="1102" height="100" alt="obraz" src="https://github.com/user-attachments/assets/8e6744a8-b262-43f9-8f01-89ea95581e63" />
 
 <img width="512" height="169" alt="unnamed" src="https://github.com/user-attachments/assets/18d97d43-36bc-479f-b782-17bbd42c687e" />
 
@@ -1214,16 +1215,16 @@ A script named `remove-threat.sh` is automatically executed when the alert is de
 ---
 ## More Custom Dashboards
 
-SSH Dashboard:
+**SSH Dashboard:**
 <img width="2548" height="1171" alt="obraz" src="https://github.com/user-attachments/assets/1b82b342-1e80-46a2-8b31-9e6217698402" />
 
-Overall Dashboard:
+**Overall Dashboard:**
 <img width="2542" height="1122" alt="obraz" src="https://github.com/user-attachments/assets/8a1b4c8d-630b-459c-af25-b6b0af69113d" />
 
-File Integrity Monitoring Dashboard:
+**File Integrity Monitoring Dashboard:**
 <img width="2551" height="1008" alt="obraz" src="https://github.com/user-attachments/assets/46b01613-55af-46d1-94b5-7b362add846d" />
 
-User Management Control Dashboard:
+**User Management Control Dashboard:**
 <img width="2556" height="1015" alt="obraz" src="https://github.com/user-attachments/assets/18de06a5-7e35-440d-a0c0-7ade40d90ba8" />
 
 ---
