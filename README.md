@@ -9,7 +9,8 @@
 4. [Deployment Overview 🚀](#deployment-overview)
 5. [Incident Response 🚨](#incident-response)
 6. [Custom Dashboards](#more-custom-dashboards)
-7. [Conclusions and Further Development Possibilities](#conclusions-and-further-development-possibilities)
+7. [Cluster Deployment](#cluster)
+8. [Conclusions and Further Development Possibilities](#conclusions-and-further-development-possibilities)
 
 ## Project Description
 
