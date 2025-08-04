@@ -1,5 +1,6 @@
 # SOC Project 🛡️
 > **Open-source SOC** lab environment using tools like **Wazuh, Suricata, TheHive, Cortex, Shuffle and more.** Built for learning, threat detection, log analysis, and incident response.
+> Work still in progress...
 
 ## 📚 Table of Contents
 1. [Project Description](#project-description)
@@ -1210,8 +1211,6 @@ A script named `remove-threat.sh` is automatically executed when the alert is de
 
 - **Port Scanning Detected by Suricata**  
   Suricata IDS detects Nmap-style scanning from a remote IP. The IP is added to a blocklist via Active Response and an alert is sent to Slack with details.
-
-> Screenshots and workflow diagrams will be included below for each case.
 
 ---
 ## More Custom Dashboards
